@@ -1,16 +1,16 @@
 let perguntas = [
-  { tipo: "menu", texto: "Pergunta 1", opcoes: ["A","B","C"] },
-  { tipo: "menu", texto: "Pergunta 2", opcoes: ["A","B","C"] },
-  { tipo: "menu", texto: "Pergunta 3", opcoes: ["A","B","C"] },
-  { tipo: "menu", texto: "Pergunta 4", opcoes: ["A","B","C"] },
-  { tipo: "menu", texto: "Pergunta 5", opcoes: ["A","B","C"] },
-  { tipo: "menu", texto: "Pergunta 6", opcoes: ["A","B","C"] },
+  { tipo: "menu", texto: "Pergunta 1", opcoes: ["Opção 1", "Opção 2", "Opção 3"] },
+  { tipo: "menu", texto: "Pergunta 2", opcoes: ["Opção 1", "Opção 2", "Opção 3"] },
+  { tipo: "menu", texto: "Pergunta 3", opcoes: ["Opção 1", "Opção 2", "Opção 3"] },
+  { tipo: "menu", texto: "Pergunta 4", opcoes: ["Opção 1", "Opção 2", "Opção 3"] },
+  { tipo: "menu", texto: "Pergunta 5", opcoes: ["Opção 1", "Opção 2", "Opção 3"] },
+  { tipo: "menu", texto: "Pergunta 6", opcoes: ["Opção 1", "Opção 2", "Opção 3"] },
 
-  { tipo: "checkbox", texto: "Pergunta 7", opcoes: ["1","2","3","4"] },
-  { tipo: "checkbox", texto: "Pergunta 8", opcoes: ["1","2","3","4"] },
-  { tipo: "checkbox", texto: "Pergunta 9", opcoes: ["1","2","3","4"] },
-  { tipo: "checkbox", texto: "Pergunta 10", opcoes: ["1","2","3","4"] },
-  { tipo: "checkbox", texto: "Pergunta 11", opcoes: ["1","2","3","4"] },
+  { tipo: "checkbox", texto: "Pergunta 7", opcoes: ["A","B","C","D"] },
+  { tipo: "checkbox", texto: "Pergunta 8", opcoes: ["A","B","C","D"] },
+  { tipo: "checkbox", texto: "Pergunta 9", opcoes: ["A","B","C","D"] },
+  { tipo: "checkbox", texto: "Pergunta 10", opcoes: ["A","B","C","D"] },
+  { tipo: "checkbox", texto: "Pergunta 11", opcoes: ["A","B","C","D"] },
 ];
 
 for (let i = 12; i <= 29; i++) {
@@ -31,7 +31,8 @@ let atual = 0;
 
 function mostrar() {
   const q = perguntas[atual];
-  document.getElementById("progress").innerText = `Pergunta ${atual + 1} de ${perguntas.length}`;
+  document.getElementById("progress").innerText =
+    `Pergunta ${atual + 1} de ${perguntas.length}`;
   document.getElementById("question-box").innerText = q.texto;
 
   let html = "";
@@ -73,7 +74,8 @@ function proxima() {
   if (atual < perguntas.length) {
     mostrar();
   } else {
-    document.getElementById("quiz-container").innerHTML = "<h2>Finalizado!</h2>";
+    document.getElementById("quiz-container").innerHTML =
+      "<h2>Finalizado! Respostas salvas no console.</h2>";
     console.log(respostas);
   }
 }
