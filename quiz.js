@@ -1,8 +1,6 @@
 // URL do seu Apps Script (já configurado)
 const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbx25OnBB3BgbSK_1PcmHyPZneMSyoMfjnA2cxB7OLdwdWnDJmHH_I5mux9cZR7HC9hKqw/exec";
 
-// 29 perguntas conforme formatação que você pediu
-
 let perguntas = [
   // 1 - signo
   {
@@ -81,7 +79,7 @@ let perguntas = [
     ]
   },
 
-  // 6 a 11 - MENUS em branco para você editar texto e opções depois
+  // 6 a 11 - em branco para editar depois (menu)
   {
     tipo: "menu",
     texto: "Pergunta 6 (editar depois)",
@@ -114,7 +112,7 @@ let perguntas = [
   }
 ];
 
-// 12 a 29 - MENUS com as 4 opções fixas
+// 12 a 29 - menus com 4 opções fixas
 for (let i = 12; i <= 29; i++) {
   perguntas.push({
     tipo: "menu",
@@ -180,6 +178,7 @@ async function enviarRespostas() {
 
 function proxima() {
   const q = perguntas[atual];
+  let resposta = null;
 
   if (q.tipo === "menu") {
     const sel = document.getElementById("sel");
@@ -187,8 +186,21 @@ function proxima() {
       alert("Selecione uma opção");
       return;
     }
-    respostas.push(sel.value);
+    resposta = sel.value;
   }
+
+  // se no futuro tiver checkbox, já está pronto
+  if (q.tipo === "checkbox") {
+    const marcados = [...document.querySelectorAll("input[type=checkbox]:checked")].map(e => e.value);
+    if (marcados.length === 0) {
+      alert("Selecione ao menos uma opção");
+      return;
+    }
+    resposta = marcados;
+  }
+
+  // SALVA sempre a resposta da pergunta atual
+  respostas.push(resposta);
 
   atual++;
 
@@ -199,5 +211,4 @@ function proxima() {
   }
 }
 
-// inicia o quiz ao carregar a página
 document.addEventListener("DOMContentLoaded", mostrar);
