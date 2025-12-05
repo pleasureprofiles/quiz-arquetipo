@@ -1,22 +1,124 @@
-let perguntas = [
-  { tipo: "menu", texto: "Pergunta 1", opcoes: ["Opção 1", "Opção 2", "Opção 3"] },
-  { tipo: "menu", texto: "Pergunta 2", opcoes: ["Opção 1", "Opção 2", "Opção 3"] },
-  { tipo: "menu", texto: "Pergunta 3", opcoes: ["Opção 1", "Opção 2", "Opção 3"] },
-  { tipo: "menu", texto: "Pergunta 4", opcoes: ["Opção 1", "Opção 2", "Opção 3"] },
-  { tipo: "menu", texto: "Pergunta 5", opcoes: ["Opção 1", "Opção 2", "Opção 3"] },
-  { tipo: "menu", texto: "Pergunta 6", opcoes: ["Opção 1", "Opção 2", "Opção 3"] },
+// URL do seu Apps Script (já configurado)
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbx25OnBB3BgbSK_1PcmHyPZneMSyoMfjnA2cxB7OLdwdWnDJmHH_I5mux9cZR7HC9hKqw/exec";
 
-  { tipo: "checkbox", texto: "Pergunta 7", opcoes: ["A", "B", "C", "D"] },
-  { tipo: "checkbox", texto: "Pergunta 8", opcoes: ["A", "B", "C", "D"] },
-  { tipo: "checkbox", texto: "Pergunta 9", opcoes: ["A", "B", "C", "D"] },
-  { tipo: "checkbox", texto: "Pergunta 10", opcoes: ["A", "B", "C", "D"] },
-  { tipo: "checkbox", texto: "Pergunta 11", opcoes: ["A", "B", "C", "D"] },
+// 29 perguntas conforme formatação que você pediu
+
+let perguntas = [
+  // 1 - signo
+  {
+    tipo: "menu",
+    texto: "Qual seu signo?",
+    opcoes: [
+      "Áries",
+      "Touro",
+      "Gêmeos",
+      "Câncer",
+      "Leão",
+      "Virgem",
+      "Libra",
+      "Escorpião",
+      "Sagitário",
+      "Capricórnio",
+      "Aquário",
+      "Peixes"
+    ]
+  },
+
+  // 2 - faixa etária
+  {
+    tipo: "menu",
+    texto: "Qual sua faixa etária?",
+    opcoes: [
+      "18 a 25",
+      "26 a 30",
+      "30 a 39",
+      "40 a 50",
+      "50 a 60",
+      "60+"
+    ]
+  },
+
+  // 3 - situação (estado civil / status)
+  {
+    tipo: "menu",
+    texto: "Qual sua situação atual?",
+    opcoes: [
+      "Casada",
+      "Solteira",
+      "Namorando",
+      "Noiva",
+      "Separada",
+      "Viúva",
+      "Liberal",
+      "Complicado"
+    ]
+  },
+
+  // 4 - orientação sexual
+  {
+    tipo: "menu",
+    texto: "Qual sua orientação sexual?",
+    opcoes: [
+      "Hetero",
+      "Homo",
+      "Bi",
+      "Pan"
+    ]
+  },
+
+  // 5 - número de pessoas
+  {
+    tipo: "menu",
+    texto: "Com quantas pessoas você já teve relações?",
+    opcoes: [
+      "1 a 5",
+      "6 a 10",
+      "11 a 15",
+      "15 a 20",
+      "20 a 25",
+      "25 a 30",
+      "31+"
+    ]
+  },
+
+  // 6 a 11 - MENUS em branco para você editar texto e opções depois
+  {
+    tipo: "menu",
+    texto: "Pergunta 6 (editar depois)",
+    opcoes: ["Opção 1", "Opção 2", "Opção 3"]
+  },
+  {
+    tipo: "menu",
+    texto: "Pergunta 7 (editar depois)",
+    opcoes: ["Opção 1", "Opção 2", "Opção 3"]
+  },
+  {
+    tipo: "menu",
+    texto: "Pergunta 8 (editar depois)",
+    opcoes: ["Opção 1", "Opção 2", "Opção 3"]
+  },
+  {
+    tipo: "menu",
+    texto: "Pergunta 9 (editar depois)",
+    opcoes: ["Opção 1", "Opção 2", "Opção 3"]
+  },
+  {
+    tipo: "menu",
+    texto: "Pergunta 10 (editar depois)",
+    opcoes: ["Opção 1", "Opção 2", "Opção 3"]
+  },
+  {
+    tipo: "menu",
+    texto: "Pergunta 11 (editar depois)",
+    opcoes: ["Opção 1", "Opção 2", "Opção 3"]
+  }
 ];
 
+// 12 a 29 - MENUS com as 4 opções fixas
 for (let i = 12; i <= 29; i++) {
   perguntas.push({
     tipo: "menu",
-    texto: `Pergunta ${i}`,
+    texto: `Pergunta ${i} (editar depois)`,
     opcoes: [
       "Nunca fiz e não tenho vontade",
       "Nunca fiz mas tenho curiosidade",
@@ -31,9 +133,13 @@ let atual = 0;
 
 function mostrar() {
   const q = perguntas[atual];
-  document.getElementById("progress").innerText =
-    `Pergunta ${atual + 1} de ${perguntas.length}`;
-  document.getElementById("question-box").innerText = q.texto;
+
+  const progressEl = document.getElementById("progress");
+  const questionEl = document.getElementById("question-box");
+  const optionsEl = document.getElementById("options-box");
+
+  progressEl.innerText = `Pergunta ${atual + 1} de ${perguntas.length}`;
+  questionEl.innerText = q.texto;
 
   let html = "";
 
@@ -46,32 +152,29 @@ function mostrar() {
     `;
   }
 
-  if (q.tipo === "checkbox") {
-    html = q.opcoes
-      .map(o => `<label><input type="checkbox" value="${o}"> ${o}</label><br>`)
-      .join("");
-  }
-
-  document.getElementById("options-box").innerHTML = html;
+  optionsEl.innerHTML = html;
 }
 
 async function enviarRespostas() {
   try {
-    const url = "https://script.google.com/macros/s/AKfycbx25OnBB3BgbSK_1PcmHyPZneMSyoMfjnA2cxB7OLdwdWnDJmHH_I5mux9cZR7HC9hKqw/exec";
-
     const body = JSON.stringify({ respostas });
 
-    await fetch(url, {
+    const response = await fetch(WEBAPP_URL, {
       method: "POST",
-      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/json"
+      },
       body
     });
 
+    console.log("Resposta do servidor:", response.status);
+
     document.getElementById("quiz-container").innerHTML =
-      "<h2>Finalizado! Respostas enviadas com sucesso!</h2>";
+      "<h2>Finalizado! Suas respostas foram enviadas.</h2>";
+
   } catch (err) {
-    alert("Erro ao enviar respostas.");
-    console.error(err);
+    console.error("Erro ao enviar respostas:", err);
+    alert("Erro ao enviar respostas. Tente novamente mais tarde.");
   }
 }
 
@@ -79,18 +182,16 @@ function proxima() {
   const q = perguntas[atual];
 
   if (q.tipo === "menu") {
-    const v = document.getElementById("sel").value;
-    if (!v) return alert("Selecione uma opção");
-    respostas.push(v);
-  }
-
-  if (q.tipo === "checkbox") {
-    const marcados = [...document.querySelectorAll("input[type=checkbox]:checked")].map(e => e.value);
-    if (marcados.length === 0) return alert("Selecione ao menos uma opção");
-    respostas.push(marcados);
+    const sel = document.getElementById("sel");
+    if (!sel || !sel.value) {
+      alert("Selecione uma opção");
+      return;
+    }
+    respostas.push(sel.value);
   }
 
   atual++;
+
   if (atual < perguntas.length) {
     mostrar();
   } else {
@@ -98,4 +199,5 @@ function proxima() {
   }
 }
 
-mostrar();
+// inicia o quiz ao carregar a página
+document.addEventListener("DOMContentLoaded", mostrar);
