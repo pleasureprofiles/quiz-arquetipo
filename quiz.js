@@ -168,7 +168,7 @@ async function enviarRespostas() {
     console.log("Resposta do servidor:", response.status);
 
     document.getElementById("quiz-container").innerHTML =
-      "<h2>Finalizado! Suas respostas foram enviadas.</h2>";
+      "<h2 class='final-msg'>Finalizado! Suas respostas foram enviadas.</h2>";
 
   } catch (err) {
     console.error("Erro ao enviar respostas:", err);
@@ -189,7 +189,6 @@ function proxima() {
     resposta = sel.value;
   }
 
-  // se no futuro tiver checkbox, já está pronto
   if (q.tipo === "checkbox") {
     const marcados = [...document.querySelectorAll("input[type=checkbox]:checked")].map(e => e.value);
     if (marcados.length === 0) {
@@ -199,7 +198,6 @@ function proxima() {
     resposta = marcados;
   }
 
-  // SALVA sempre a resposta da pergunta atual
   respostas.push(resposta);
 
   atual++;
@@ -207,6 +205,10 @@ function proxima() {
   if (atual < perguntas.length) {
     mostrar();
   } else {
+    // desabilita botão para evitar clique duplo
+    const btn = document.getElementById("btn-next");
+    if (btn) btn.disabled = true;
+
     enviarRespostas();
   }
 }
