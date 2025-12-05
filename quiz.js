@@ -157,24 +157,31 @@ function mostrar() {
 
 async function enviarRespostas() {
   try {
-    const body = JSON.stringify({ respostas });
+    // ENVIO COMO FORMDATA (sem Content-Type manual) PRA EVITAR CORS/PREFLIGHT
+    const formData = new FormData();
+    formData.append("respostas", JSON.stringify(respostas));
 
     const response = await fetch(WEBAPP_URL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body
+      body: formData
     });
 
     console.log("Status do servidor:", response.status);
 
-    document.getElementById("quiz-container").innerHTML =
-      "<h2 style='text-align:center;'>Finalizado! Suas respostas foram enviadas.</h2>";
+    if (!response.ok) {
+      alert("Erro ao enviar respostas (HTTP " + response.status + ").");
+      return;
+    }
+
+    const container = document.getElementById("quiz-container");
+    if (container) {
+      container.innerHTML =
+        "<h2 style='text-align:center;'>Finalizado! Suas respostas foram enviadas.</h2>";
+    }
 
   } catch (err) {
     console.error("Erro ao enviar respostas:", err);
-    alert("Erro ao enviar respostas. Tente novamente mais tarde.");
+    alert("Erro ao enviar respostas. Detalhe: " + err);
   }
 }
 
