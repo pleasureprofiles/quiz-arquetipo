@@ -1,4 +1,4 @@
-// URL do seu Apps Script (já configurado)
+// URL do seu Apps Script (já configurado como Web App)
 const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbx25OnBB3BgbSK_1PcmHyPZneMSyoMfjnA2cxB7OLdwdWnDJmHH_I5mux9cZR7HC9hKqw/exec";
 
 let perguntas = [
@@ -154,6 +154,11 @@ function mostrar() {
 }
 
 async function enviarRespostas() {
+  const btn = document.querySelector("button"); // seu botão "Próxima"
+
+  // desabilita enquanto está enviando
+  if (btn) btn.disabled = true;
+
   try {
     const body = JSON.stringify({ respostas });
 
@@ -165,14 +170,31 @@ async function enviarRespostas() {
       body
     });
 
-    console.log("Resposta do servidor:", response.status);
+    // se der erro HTTP (403, 500, etc.)
+    if (!response.ok) {
+      console.error("Status HTTP ruim:", response.status);
+      alert("Erro ao enviar respostas. (HTTP " + response.status + ")");
+      if (btn) btn.disabled = false;
+      return;
+    }
+
+    let data = null;
+    try {
+      data = await response.json();
+    } catch (_) {
+      // se não vier JSON, ignora
+    }
+
+    console.log("Resposta do servidor:", data);
 
     document.getElementById("quiz-container").innerHTML =
-      "<h2 class='final-msg'>Finalizado! Suas respostas foram enviadas.</h2>";
+      "<h2 style='text-align:center;'>Finalizado! Suas respostas foram enviadas.</h2>";
 
   } catch (err) {
     console.error("Erro ao enviar respostas:", err);
     alert("Erro ao enviar respostas. Tente novamente mais tarde.");
+    // reabilita o botão pra não ficar morto
+    if (btn) btn.disabled = false;
   }
 }
 
@@ -199,16 +221,11 @@ function proxima() {
   }
 
   respostas.push(resposta);
-
   atual++;
 
   if (atual < perguntas.length) {
     mostrar();
   } else {
-    // desabilita botão para evitar clique duplo
-    const btn = document.getElementById("btn-next");
-    if (btn) btn.disabled = true;
-
     enviarRespostas();
   }
 }
