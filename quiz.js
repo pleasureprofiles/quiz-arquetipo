@@ -154,38 +154,25 @@ function mostrar() {
 }
 
 async function enviarRespostas() {
-  const btn = document.querySelector("button"); // seu botão "Próxima"
-
-  // desabilita enquanto está enviando
+  const btn = document.querySelector("button"); // botão "Próxima"
   if (btn) btn.disabled = true;
 
   try {
-    const body = JSON.stringify({ respostas });
+    // Envia como FormData pra evitar treta de CORS
+    const formData = new FormData();
+    formData.append("respostas", JSON.stringify(respostas));
 
     const response = await fetch(WEBAPP_URL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body
+      body: formData
     });
 
-    // se der erro HTTP (403, 500, etc.)
     if (!response.ok) {
       console.error("Status HTTP ruim:", response.status);
-      alert("Erro ao enviar respostas. (HTTP " + response.status + ")");
+      alert("Erro ao enviar respostas (HTTP " + response.status + ")");
       if (btn) btn.disabled = false;
       return;
     }
-
-    let data = null;
-    try {
-      data = await response.json();
-    } catch (_) {
-      // se não vier JSON, ignora
-    }
-
-    console.log("Resposta do servidor:", data);
 
     document.getElementById("quiz-container").innerHTML =
       "<h2 style='text-align:center;'>Finalizado! Suas respostas foram enviadas.</h2>";
@@ -193,8 +180,7 @@ async function enviarRespostas() {
   } catch (err) {
     console.error("Erro ao enviar respostas:", err);
     alert("Erro ao enviar respostas. Tente novamente mais tarde.");
-    // reabilita o botão pra não ficar morto
-    if (btn) btn.disabled = false;
+    if (btn) btn.disabled = false; // não deixa o botão morto
   }
 }
 
