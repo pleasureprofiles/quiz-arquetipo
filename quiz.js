@@ -6,11 +6,11 @@ let perguntas = [
   { tipo: "menu", texto: "Pergunta 5", opcoes: ["Opção 1", "Opção 2", "Opção 3"] },
   { tipo: "menu", texto: "Pergunta 6", opcoes: ["Opção 1", "Opção 2", "Opção 3"] },
 
-  { tipo: "checkbox", texto: "Pergunta 7", opcoes: ["A","B","C","D"] },
-  { tipo: "checkbox", texto: "Pergunta 8", opcoes: ["A","B","C","D"] },
-  { tipo: "checkbox", texto: "Pergunta 9", opcoes: ["A","B","C","D"] },
-  { tipo: "checkbox", texto: "Pergunta 10", opcoes: ["A","B","C","D"] },
-  { tipo: "checkbox", texto: "Pergunta 11", opcoes: ["A","B","C","D"] },
+  { tipo: "checkbox", texto: "Pergunta 7", opcoes: ["A", "B", "C", "D"] },
+  { tipo: "checkbox", texto: "Pergunta 8", opcoes: ["A", "B", "C", "D"] },
+  { tipo: "checkbox", texto: "Pergunta 9", opcoes: ["A", "B", "C", "D"] },
+  { tipo: "checkbox", texto: "Pergunta 10", opcoes: ["A", "B", "C", "D"] },
+  { tipo: "checkbox", texto: "Pergunta 11", opcoes: ["A", "B", "C", "D"] },
 ];
 
 for (let i = 12; i <= 29; i++) {
@@ -48,11 +48,31 @@ function mostrar() {
 
   if (q.tipo === "checkbox") {
     html = q.opcoes
-      .map(o => `<label><input type="checkbox" value="${o}"> ${o}</label>`)
+      .map(o => `<label><input type="checkbox" value="${o}"> ${o}</label><br>`)
       .join("");
   }
 
   document.getElementById("options-box").innerHTML = html;
+}
+
+async function enviarRespostas() {
+  try {
+    const url = "https://script.google.com/macros/s/AKfycbx25OnBB3BgbSK_1PcmHyPZneMSyoMfjnA2cxB7OLdwdWnDJmHH_I5mux9cZR7HC9hKqw/exec";
+
+    const body = JSON.stringify({ respostas });
+
+    await fetch(url, {
+      method: "POST",
+      mode: "no-cors",
+      body
+    });
+
+    document.getElementById("quiz-container").innerHTML =
+      "<h2>Finalizado! Respostas enviadas com sucesso!</h2>";
+  } catch (err) {
+    alert("Erro ao enviar respostas.");
+    console.error(err);
+  }
 }
 
 function proxima() {
@@ -66,7 +86,7 @@ function proxima() {
 
   if (q.tipo === "checkbox") {
     const marcados = [...document.querySelectorAll("input[type=checkbox]:checked")].map(e => e.value);
-    if (marcados.length === 0) return alert("Selecione ao menos uma");
+    if (marcados.length === 0) return alert("Selecione ao menos uma opção");
     respostas.push(marcados);
   }
 
@@ -74,9 +94,7 @@ function proxima() {
   if (atual < perguntas.length) {
     mostrar();
   } else {
-    document.getElementById("quiz-container").innerHTML =
-      "<h2>Finalizado! Respostas salvas no console.</h2>";
-    console.log(respostas);
+    enviarRespostas();
   }
 }
 
