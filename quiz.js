@@ -155,34 +155,24 @@ function mostrar() {
   optionsEl.innerHTML = html;
 }
 
-async function enviarRespostas() {
-  try {
-    // ENVIO COMO FORMDATA (sem Content-Type manual) PRA EVITAR CORS/PREFLIGHT
-    const formData = new FormData();
-    formData.append("respostas", JSON.stringify(respostas));
+function enviarRespostas() {
+  // Em vez de fetch, vamos submeter um form normal (sem CORS, sem AJAX)
+  const form = document.getElementById("sendForm");
+  const input = document.getElementById("respostas-input");
 
-    const response = await fetch(WEBAPP_URL, {
-      method: "POST",
-      body: formData
-    });
-
-    console.log("Status do servidor:", response.status);
-
-    if (!response.ok) {
-      alert("Erro ao enviar respostas (HTTP " + response.status + ").");
-      return;
-    }
-
-    const container = document.getElementById("quiz-container");
-    if (container) {
-      container.innerHTML =
-        "<h2 style='text-align:center;'>Finalizado! Suas respostas foram enviadas.</h2>";
-    }
-
-  } catch (err) {
-    console.error("Erro ao enviar respostas:", err);
-    alert("Erro ao enviar respostas. Detalhe: " + err);
+  if (!form || !input) {
+    alert("Erro interno: formulário de envio não encontrado.");
+    return;
   }
+
+  // Garante que o form está apontando pro Apps Script correto
+  form.action = WEBAPP_URL;
+
+  // Coloca as respostas como JSON dentro do campo hidden
+  input.value = JSON.stringify(respostas);
+
+  // Envia o formulário. O navegador vai abrir a página de resposta do Apps Script.
+  form.submit();
 }
 
 function proxima() {
