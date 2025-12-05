@@ -25,32 +25,73 @@
     .iframe-container {
       width: 100%;
       max-width: 640px;
-      height: 92vh;
+      height: auto;
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 0 25px rgba(0, 0, 0, 0.8);
       border: 1px solid rgba(255, 255, 255, 0.08);
       background: rgba(15, 10, 25, 0.96);
+      padding: 30px;
     }
 
-    iframe {
+    #progress {
+      font-size: 18px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    #question-box {
+      font-size: 22px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    #options-box {
+      margin-bottom: 25px;
+      text-align: left;
+    }
+
+    select {
       width: 100%;
-      height: 100%;
+      padding: 12px;
+      border-radius: 8px;
       border: none;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 16px;
     }
 
-    @media (max-width: 700px) {
-      .iframe-container {
-        height: 95vh;
-      }
+    input[type="checkbox"] {
+      margin-right: 8px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background: #8c2aff;
+      color: #fff;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #a15cff;
     }
   </style>
 </head>
 <body>
-  <div class="iframe-container">
-    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSchpgtavwxr8X1NLcJG5R4PiyeGAGbNvlG2NiNoKs4Ex2BkAg/viewform?embedded=true">
-      Carregando o formulário…
-    </iframe>
+
+  <div class="iframe-container" id="quiz-container">
+    <div id="progress"></div>
+    <div id="question-box"></div>
+    <div id="options-box"></div>
+    <button onclick="proxima()">Próxima</button>
   </div>
+
+  <script src="quiz.js"></script>
+
 </body>
 </html>
