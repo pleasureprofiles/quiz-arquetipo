@@ -79,4 +79,137 @@ let perguntas = [
         ]
     },
 
-    // 6
+    // 6 a 11 - em branco para editar depois (menu)
+    {
+        tipo: "menu",
+        texto: "Pergunta 6 (editar depois)",
+        opcoes: ["Opção 1", "Opção 2", "Opção 3"]
+    },
+    {
+        tipo: "menu",
+        texto: "Pergunta 7 (editar depois)",
+        opcoes: ["Opção 1", "Opção 2", "Opção 3"]
+    },
+    {
+        tipo: "menu",
+        texto: "Pergunta 8 (editar depois)",
+        opcoes: ["Opção 1", "Opção 2", "Opção 3"]
+    },
+    {
+        tipo: "menu",
+        texto: "Pergunta 9 (editar depois)",
+        opcoes: ["Opção 1", "Opção 2", "Opção 3"]
+    },
+    {
+        tipo: "menu",
+        texto: "Pergunta 10 (editar depois)",
+        opcoes: ["Opção 1", "Opção 2", "Opção 3"]
+    },
+    {
+        tipo: "menu",
+        texto: "Pergunta 11 (editar depois)",
+        opcoes: ["Opção 1", "Opção 2", "Opção 3"]
+    }
+];
+
+// 12 a 29 - menus com 4 opções fixas
+for (let i = 12; i <= 29; i++) {
+    perguntas.push({
+        tipo: "menu",
+        texto: `Pergunta ${i} (editar depois)`,
+        opcoes: [
+            "Nunca fiz e não tenho vontade",
+            "Nunca fiz mas tenho curiosidade",
+            "Já fiz e não gostei",
+            "Já fiz e repetiria com prazer"
+        ]
+    });
+}
+
+let respostas = [];
+let atual = 0;
+let enviando = false; // Flag para evitar envios duplicados
+
+function mostrar() {
+    const q = perguntas[atual];
+    const progressEl = document.getElementById("progress");
+    const questionEl = document.getElementById("question-box");
+    const optionsEl = document.getElementById("options-box");
+    const btnNext = document.getElementById("btn-next");
+
+    if (!progressEl || !questionEl || !optionsEl || !btnNext) {
+        console.error("Elementos do quiz não encontrados no HTML.");
+        return;
+    }
+
+    progressEl.innerText = `Pergunta ${atual + 1} de ${perguntas.length}`;
+    questionEl.innerText = q.texto;
+
+    let html = "";
+
+    if (q.tipo === "menu") {
+        html = '<select id="sel"><option value="">Selecione...</option>';
+        // Cria as opções a partir do array. O valor é o próprio texto da opção.
+        html += q.opcoes.map(o => `<option value="${o}">${o}</option>`).join("");
+        html += "</select>";
+    }
+    // Nota: O tipo "checkbox" foi removido daqui para focar na correção do "menu"
+
+    optionsEl.innerHTML = html;
+
+    // Se for a última pergunta, muda o texto do botão
+    if (atual === perguntas.length - 1) {
+        btnNext.innerText = 'Ver meu Resultado!';
+    } else {
+        btnNext.innerText = 'Próxima';
+    }
+}
+
+// *** FUNÇÃO proxima() ***
+function proxima() {
+    // 1. Evita cliques múltiplos durante o envio
+    if (enviando) return;
+
+    const q = perguntas[atual];
+    let resposta = null;
+
+    // A VALIDAÇÃO
+    if (q.tipo === "menu") {
+        const sel = document.getElementById("sel");
+        // Verifica se o elemento existe E se o valor não é a string vazia ("")
+        if (!sel || !sel.value) { 
+            alert("ESCOLHA UMA OPCAO para prosseguir."); // Mensagem original mantida
+            return;
+        }
+        resposta = sel.value;
+    }
+
+    // Se a validação não for atendida para outros tipos (como checkbox), você deve adicionar o código aqui
+
+    respostas.push(resposta);
+    atual++; // Avança para a próxima pergunta
+
+    // 2. Lógica de Encerramento Aprimorada
+    if (atual < perguntas.length) {
+        mostrar();
+    } else {
+        // Fim do quiz
+        mudarTelaEnviando("Processando suas 30 respostas...");
+        enviarRespostas();
+    }
+}
+
+// *** FUNÇÃO enviarRespostas() - Versão Final e Simplificada ***
+async function enviarRespostas() {
+    // 1. Evita cliques duplicados
+    enviando = true; 
+    
+    const formData = new FormData();
+    formData.append('respostas', JSON.stringify(respostas));
+
+    try {
+        // 2. Faz a requisição de envio
+        const response = await fetch(WEBAPP_URL, {
+            method: 'POST',
+            body: formData,
+            mode:
