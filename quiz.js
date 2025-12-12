@@ -1,397 +1,145 @@
-// URL do seu Apps Script (Web App)
+// COPIE TODO ESTE CÓDIGO E COLE NO SEU ARQUIVO quiz.js
+
 const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbx25OnBB3BgbSK_1PcmHyPZneMSyoMfjnA2cxB7OLdwdWnDJmHH_I5mux9cZR7HC9hKqw/exec";
 
-let perguntas = [
-    // BLOCO 1 - Perfil Básico (1-5)
-    {
-        tipo: "menu",
-        bloco: "Perfil da Deusa",
-        texto: "Qual é o seu signo?",
-        opcoes: ["Áries", "Touro", "Gêmeos", "Câncer", "Leão", "Virgem", "Libra", "Escorpião", "Sagitário", "Capricórnio", "Aquário", "Peixes"]
-    },
-    {
-        tipo: "menu",
-        bloco: "Perfil da Deusa",
-        texto: "Qual sua faixa etária?",
-        opcoes: ["18-24", "25-34", "35-44", "45-54", "55-64", "65+"]
-    },
-    {
-        tipo: "menu",
-        bloco: "Perfil da Deusa",
-        texto: "Qual é a sua orientação sexual?",
-        opcoes: ["Heterossexual", "Bissexual", "Homossexual", "Pansexual"]
-    },
-    {
-        tipo: "menu",
-        bloco: "Perfil da Deusa",
-        texto: "Qual seu status de relacionamento?",
-        opcoes: ["Solteira", "Namorando", "Noiva", "Casada", "União Estável", "Relacionamento Aberto", "Divorciada", "Viúva", "É complicado"]
-    },
-    {
-        tipo: "menu",
-        bloco: "Perfil da Deusa",
-        texto: "E o seu 'currículo amoroso'?",
-        opcoes: ["0-1", "2-5", "6-10", "11-20", "21-30", "31-50", "51+"]
-    },
-
-    // BLOCO 2 - Como se agrada uma Deusa (6-11)
-    {
-        tipo: "menu",
-        bloco: "🔥 Como se agrada uma Deusa",
-        texto: "Quem prefere que tome a iniciativa na hora H?",
-        opcoes: ["Eu", "Ele(s)", "Depende do momento"]
-    },
-    {
-        tipo: "checkbox",
-        bloco: "🔥 Como se agrada uma Deusa",
-        texto: "O que mais faz seu corpo entrar no clima?",
-        opcoes: ["Beijos quentes", "Carícias no corpo", "Toque íntimo", "Conversas picantes"]
-    },
-    {
-        tipo: "checkbox",
-        bloco: "🔥 Como se agrada uma Deusa",
-        texto: "Posição preferida?",
-        opcoes: ["Cavalgando", "Papai & Mamãe", "De quatro", "Em pé", "69"]
-    },
-    {
-        tipo: "menu",
-        bloco: "🔥 Como se agrada uma Deusa",
-        texto: "Quantos orgasmos conquista na semana?",
-        opcoes: ["1", "2–3", "4–6", "Mais de 6"]
-    },
-    {
-        tipo: "menu",
-        bloco: "🔥 Como se agrada uma Deusa",
-        texto: "O tamanho importa? O que essa Deusa prefere?",
-        opcoes: ["12 a 15cm", "15 a 18cm", "19 a 21cm", "22cm ou mais"]
-    },
-    {
-        tipo: "checkbox",
-        bloco: "🔥 Como se agrada uma Deusa",
-        texto: "O que normalmente te leva ao auge do prazer?",
-        opcoes: ["Sexo oral", "Penetração", "Estimulação externa com dedos", "Brinquedos", "Estimulação anal", "Vários ao mesmo tempo"]
-    },
-
-    // BLOCO 3 - Reflexão da Deusa (12)
-    {
-        tipo: "checkbox",
-        bloco: "🔥🔥 Reflexão da Deusa",
-        texto: "Quando a imaginação bate sozinha, o que você recorre a:",
-        opcoes: ["Contos eróticos", "Vídeo pornô", "Vibrador", "Brinquedos variados", "Banho estratégico"]
-    },
-
-    // BLOCO 4 - A mente de uma Deusa / A caixa preta (13-18)
-    {
-        tipo: "menu",
-        bloco: "🔥🔥🔥 A mente de uma Deusa",
-        texto: "Sexo com pessoa do mesmo sexo",
-        opcoes: ["Nunca fiz e não tenho vontade", "Nunca fiz mas tenho curiosidade", "Já fiz e não gostei", "Já fiz e repetiria com prazer"]
-    },
-    {
-        tipo: "menu",
-        bloco: "🔥🔥🔥 A mente de uma Deusa",
-        texto: "Sexo a três (2 homens com você)",
-        opcoes: ["Nunca fiz e não tenho vontade", "Nunca fiz mas tenho curiosidade", "Já fiz e não gostei", "Já fiz e repetiria com prazer"]
-    },
-    {
-        tipo: "menu",
-        bloco: "🔥🔥🔥 A mente de uma Deusa",
-        texto: "Sexo a três (você, uma amiga e um parceiro)",
-        opcoes: ["Nunca fiz e não tenho vontade", "Nunca fiz mas tenho curiosidade", "Já fiz e não gostei", "Já fiz e repetiria com prazer"]
-    },
-    {
-        tipo: "menu",
-        bloco: "🔥🔥🔥 A mente de uma Deusa",
-        texto: "Sexo com pessoa trans",
-        opcoes: ["Nunca fiz e não tenho vontade", "Nunca fiz mas tenho curiosidade", "Já fiz e não gostei", "Já fiz e repetiria com prazer"]
-    },
-    {
-        tipo: "menu",
-        bloco: "🔥🔥🔥 A mente de uma Deusa",
-        texto: "Sexo com total desconhecido(a)",
-        opcoes: ["Nunca fiz e não tenho vontade", "Nunca fiz mas tenho curiosidade", "Já fiz e não gostei", "Já fiz e repetiria com prazer"]
-    },
-    {
-        tipo: "menu",
-        bloco: "🔥🔥🔥 A mente de uma Deusa",
-        texto: "Troca de casais / Swing",
-        opcoes: ["Nunca fiz e não tenho vontade", "Nunca fiz mas tenho curiosidade", "Já fiz e não gostei", "Já fiz e repetiria com prazer"]
-    },
-    {
-        tipo: "menu",
-        bloco: "🔥🔥🔥 A mente de uma Deusa",
-        texto: "Orgia (mais de 3 pessoas envolvidas)",
-        opcoes: ["Nunca fiz e não tenho vontade", "Nunca fiz mas tenho curiosidade", "Já fiz e não gostei", "Já fiz e repetiria com prazer"]
-    },
-
-    // BLOCO 5 - Poder e dominação (19-25)
-    {
-        tipo: "menu",
-        bloco: "🔥🔥🔥🔥 Poder e dominação de uma Deusa",
-        texto: "O que você prefere, no geral?",
-        opcoes: ["Ser dominada", "Dominar"]
-    },
-    {
-        tipo: "menu",
-        bloco: "🔥🔥🔥🔥 Poder e dominação de uma Deusa",
-        texto: "Inversão de papéis (homem no papel de 'seu escravo', obedecendo às suas ordens)",
-        opcoes: ["Nunca fiz e não tenho vontade", "Nunca fiz mas tenho curiosidade", "Já fiz e não gostei", "Já fiz e repetiria com prazer"]
-    },
-    {
-        tipo: "menu",
-        bloco: "🔥🔥🔥🔥 Poder e dominação de uma Deusa",
-        texto: "Algemas / Bondage (ser imobilizada ou imobilizar o outro com algemas, cordas, amarras etc.)",
-        opcoes: ["Nunca fiz e não tenho vontade", "Nunca fiz mas tenho curiosidade", "Já fiz e não gostei", "Já fiz e repetiria com prazer"]
-    },
-    {
-        tipo: "menu",
-        bloco: "🔥🔥🔥🔥 Poder e dominação de uma Deusa",
-        texto: "Sado / Dor moderada (tapas, puxões, apertos, pequenos estímulos de dor controlada)",
-        opcoes: ["Nunca fiz e não tenho vontade", "Nunca fiz mas tenho curiosidade", "Já fiz e não gostei", "Já fiz e repetiria com prazer"]
-    },
-    {
-        tipo: "menu",
-        bloco: "🔥🔥🔥🔥 Poder e dominação de uma Deusa",
-        texto: "Sado / Dor extrema (situações em que a dor intensa com uso de acessórios é parte central da cena)",
-        opcoes: ["Nunca fiz e não tenho vontade", "Nunca fiz mas tenho curiosidade", "Já fiz e não gostei", "Já fiz e repetiria com prazer"]
-    },
-    {
-        tipo: "menu",
-        bloco: "🔥🔥🔥🔥 Poder e dominação de uma Deusa",
-        texto: "Humilhação erótica do parceiro (rebaixar, provocar, xingar o parceiro em contexto sexual consensual)",
-        opcoes: ["Nunca fiz e não tenho vontade", "Nunca fiz mas tenho curiosidade", "Já fiz e não gostei", "Já fiz e repetiria com prazer"]
-    },
-    {
-        tipo: "menu",
-        bloco: "🔥🔥🔥🔥 Poder e dominação de uma Deusa",
-        texto: "Pegging (usar uma cinta no parceiro, literalmente invertendo o jogo)",
-        opcoes: ["Nunca fiz e não tenho vontade", "Nunca fiz mas tenho curiosidade", "Já fiz e não gostei", "Já fiz e repetiria com prazer"]
-    },
-
-    // BLOCO 6 - A Caixa Secreta (26)
-    {
-        tipo: "checkbox",
-        bloco: "🔥🔥🔥🔥🔥 A Caixa Secreta da Deusa",
-        texto: "Em um cenário com você, seu parceiro e outra mulher, qual dessas cenas mais te chama atenção?",
-        opcoes: [
-            "Beijar e tocar essa mulher enquanto o parceiro assiste",
-            "As duas dando atenção pra ele ao mesmo tempo",
-            "Você e ela se divertindo mais entre vocês do que com ele",
-            "Ele focado em te estimular enquanto você brinca com ela",
-            "Revezar: hora você com ele, hora ela com ele, hora só vocês duas"
-        ]
-    },
-
-    // Continuação do BLOCO 6 (27-33)
-    {
-        tipo: "menu",
-        bloco: "🔥🔥🔥🔥🔥 A Caixa Secreta da Deusa",
-        texto: "Golden shower (uso de xixi em contexto erótico/humilhação, você faz ou recebe)",
-        opcoes: ["Nunca fiz e não tenho vontade", "Nunca fiz mas tenho curiosidade", "Já fiz e não gostei", "Já fiz e repetiria com prazer"]
-    },
-    {
-        tipo: "menu",
-        bloco: "🔥🔥🔥🔥🔥 A Caixa Secreta da Deusa",
-        texto: "'Traição' com consentimento do parceiro (ficar com outra pessoa com o parceiro sabendo e autorizando)",
-        opcoes: ["Nunca fiz e não tenho vontade", "Nunca fiz mas tenho curiosidade", "Já fiz e não gostei", "Já fiz e repetiria com prazer"]
-    },
-    {
-        tipo: "menu",
-        bloco: "🔥🔥🔥🔥🔥 A Caixa Secreta da Deusa",
-        texto: "Cuckold Clássico (você transa com outro homem enquanto o parceiro assiste)",
-        opcoes: ["Nunca fiz e não tenho vontade", "Nunca fiz mas tenho curiosidade", "Já fiz e não gostei", "Já fiz e repetiria com prazer"]
-    },
-    {
-        tipo: "menu",
-        bloco: "🔥🔥🔥🔥🔥 A Caixa Secreta da Deusa",
-        texto: "Hotwife e Marido Cuckold (você sai com roupas chamativas e flerta com outros na frente dele)",
-        opcoes: ["Nunca fiz e não tenho vontade", "Nunca fiz mas tenho curiosidade", "Já fiz e não gostei", "Já fiz e repetiria com prazer"]
-    },
-    {
-        tipo: "menu",
-        bloco: "🔥🔥🔥🔥🔥 A Caixa Secreta da Deusa",
-        texto: "Hotwife Clássica (você sai com outro e depois conta tudo pro parceiro na cama)",
-        opcoes: ["Nunca fiz e não tenho vontade", "Nunca fiz mas tenho curiosidade", "Já fiz e não gostei", "Já fiz e repetiria com prazer"]
-    },
-    {
-        tipo: "menu",
-        bloco: "🔥🔥🔥🔥🔥 A Caixa Secreta da Deusa",
-        texto: "Cuckqueen (você assiste seu parceiro com outra)",
-        opcoes: ["Nunca fiz e não tenho vontade", "Nunca fiz mas tenho curiosidade", "Já fiz e não gostei", "Já fiz e repetiria com prazer"]
-    },
-    {
-        tipo: "menu",
-        bloco: "🔥🔥🔥🔥🔥 A Caixa Secreta da Deusa",
-        texto: "Hotwife Indomável (você transa com outro homem e manda seu parceiro interagir com ele)",
-        opcoes: ["Nunca fiz e não tenho vontade", "Nunca fiz mas tenho curiosidade", "Já fiz e não gostei", "Já fiz e repetiria com prazer"]
-    },
-    {
-        tipo: "menu",
-        bloco: "🔥🔥🔥🔥🔥 A Caixa Secreta da Deusa",
-        texto: "Orgia (homens e mulheres se pegam)",
-        opcoes: ["Nunca fiz e não tenho vontade", "Nunca fiz mas tenho curiosidade", "Já fiz e não gostei", "Já fiz e repetiria com prazer"]
-    }
-];
-
-let respostas = [];
-let atual = 0;
+const answers = {};
+let telaAtual = 0;
 let enviando = false;
 
-function mostrar() {
-    const q = perguntas[atual];
-    const progressEl = document.getElementById("progress");
-    const questionEl = document.getElementById("question-box");
-    const optionsEl = document.getElementById("options-box");
-    const btnNext = document.getElementById("btn-next");
+const telas = [
+    { tipo: "transicao", bg: "./quiz/BGBV.jpg", botao: "Começar sua Jornada" },
+    { tipo: "transicao", bg: "./quiz/BG01P01.png", botao: "Iniciar Portal 1" },
+    { tipo: "pergunta", bg: "./quiz/BG1.png", portal: "🔮 Portal 1", texto: "Qual é o seu signo?", campo: "q1_signo", menu: ["Áries","Touro","Gêmeos","Câncer","Leão","Virgem","Libra","Escorpião","Sagitário","Capricórnio","Aquário","Peixes"] },
+    { tipo: "pergunta", bg: "./quiz/BG1.png", portal: "🔮 Portal 1", texto: "Qual sua faixa etária?", campo: "q2_idade", menu: ["18-24","25-34","35-44","45-54","55-64","65+"] },
+    { tipo: "pergunta", bg: "./quiz/BG1.png", portal: "🔮 Portal 1", texto: "Qual é a sua orientação sexual?", campo: "q3_orientacao", menu: ["Heterossexual","Bissexual","Homossexual","Pansexual"] },
+    { tipo: "pergunta", bg: "./quiz/BG1.png", portal: "🔮 Portal 1", texto: "Qual seu status de relacionamento?", campo: "q4_status", menu: ["Solteira","Namorando","Noiva","Casada","União Estável","Relacionamento Aberto","Divorciada","Viúva","É complicado"] },
+    { tipo: "pergunta", bg: "./quiz/BG1.png", portal: "🔮 Portal 1", texto: "E o seu 'currículo amoroso'?", campo: "q5_curriculo", menu: ["0-1","2-5","6-10","11-20","21-30","31-50","51+"] },
+    { tipo: "transicao", bg: "./quiz/BG02P02.png", botao: "Iniciar Portal 2" },
+    { tipo: "pergunta", bg: "./quiz/BG2.png", portal: "🔥 Portal 2", texto: "Quem prefere que tome a iniciativa na hora H?", campo: "q6_iniciativa", menu: ["Eu","Ele(s)","Depende do momento"] },
+    { tipo: "pergunta", bg: "./quiz/BG2.png", portal: "🔥 Portal 2", texto: "O que mais faz seu corpo entrar no clima?", campo: "q7_clima", checkbox: ["Beijos quentes","Carícias no corpo","Toque íntimo","Conversas picantes"] },
+    { tipo: "pergunta", bg: "./quiz/BG2.png", portal: "🔥 Portal 2", texto: "Posição preferida?", campo: "q8_posicoes", checkbox: ["Cavalgando","Papai & Mamãe","De quatro","Em pé","69","De ladinho"] },
+    { tipo: "pergunta", bg: "./quiz/BG2.png", portal: "🔥 Portal 2", texto: "Quantos orgasmos você tem na semana?", campo: "q9_orgasmos", menu: ["Nenhum","1","2–3","4–6","Mais de 6"] },
+    { tipo: "pergunta", bg: "./quiz/BG2.png", portal: "🔥 Portal 2", texto: "O tamanho importa? Qual a preferência da Deusa?", campo: "q10_tamanho", checkbox: ["12 a 15cm","15 a 18cm","19 a 21cm","22cm ou mais"] },
+    { tipo: "pergunta", bg: "./quiz/BG2.png", portal: "🔥 Portal 2", texto: "O que normalmente te leva ao auge do prazer?", campo: "q11_auge", checkbox: ["Sexo oral","Penetração","Estimulação externa com dedos","Brinquedinhos","Estimulação anal","Vários ao mesmo tempo"] },
+    { tipo: "transicao", bg: "./quiz/BG03P03.png", botao: "Iniciar Portal 3" },
+    { tipo: "pergunta", bg: "./quiz/BG3.png", portal: "🌙 Portal 3", texto: "Quando a imaginação bate sozinha, a que você recorre:", campo: "q12_sozinha", checkbox: ["Contos eróticos","Vídeo pornô","Vibrador","Brinquedos variados","Banho estratégico"] },
+    { tipo: "pergunta", bg: "./quiz/BG3.png", portal: "🌙 Portal 3", texto: "Já experimentou pessoas do mesmo sexo na cama", campo: "q13_mesmoSexo", menu: ["Nunca fiz e não tenho vontade","Nunca fiz mas tenho curiosidade","Já fiz e não gostei","Já fiz e repetiria com prazer"] },
+    { tipo: "pergunta", bg: "./quiz/BG3.png", portal: "🌙 Portal 3", texto: "Já teve experiências a três (2 homens e você)", campo: "q13b_tres2Homens", menu: ["Nunca fiz e não tenho vontade","Nunca fiz mas tenho curiosidade","Já fiz e não gostei","Já fiz e repetiria com prazer"] },
+    { tipo: "pergunta", bg: "./quiz/BG3.png", portal: "🌙 Portal 3", texto: "Experiências a três (você uma amiga e um parceiro)", campo: "q14_tresAmigaParceiro", menu: ["Nunca fiz e não tenho vontade","Nunca fiz mas tenho curiosidade","Já fiz e não gostei","Já fiz e repetiria com prazer"] },
+    { tipo: "pergunta", bg: "./quiz/BG3.png", portal: "🌙 Portal 3", texto: "Experiências com pessoas trans", campo: "q15_trans", menu: ["Nunca fiz e não tenho vontade","Nunca fiz mas tenho curiosidade","Já fiz e não gostei","Já fiz e repetiria com prazer"] },
+    { tipo: "pergunta", bg: "./quiz/BG3.png", portal: "🌙 Portal 3", texto: "Sexo com total desconhecido(a)", campo: "q16_desconhecido", menu: ["Nunca fiz e não tenho vontade","Nunca fiz mas tenho curiosidade","Já fiz e não gostei","Já fiz e repetiria com prazer"] },
+    { tipo: "pergunta", bg: "./quiz/BG3.png", portal: "🌙 Portal 3", texto: "Foi convidada pelo parceiro para troca de casais / Swing", campo: "q17_swing", menu: ["Nunca fiz e não tenho vontade","Nunca fiz mas tenho curiosidade","Já fiz e não gostei","Já fiz e repetiria com prazer"] },
+    { tipo: "pergunta", bg: "./quiz/BG3.png", portal: "🌙 Portal 3", texto: "Foi convidada para uma suruba (mais de 3 pessoas envolvidas)", campo: "q18_orgia", menu: ["Nunca fiz e não tenho vontade","Nunca fiz mas tenho curiosidade","Já fiz e não gostei","Já fiz e repetiria com prazer"] },
+    { tipo: "transicao", bg: "./quiz/BG04P04.png", botao: "Iniciar Portal 4" },
+    { tipo: "pergunta", bg: "./quiz/BG4.png", portal: "🗝 Portal 4", texto: "O que você prefere, no geral?", campo: "q19_prefereDom", menu: ["Ser dominada","Dominar"] },
+    { tipo: "pergunta", bg: "./quiz/BG4.png", portal: "🗝 Portal 4", texto: "Inversão de papéis", campo: "q20_inversaoPapeis", menu: ["Nunca fiz e não tenho vontade","Nunca fiz mas tenho curiosidade","Já fiz e não gostei","Já fiz e repetiria com prazer"] },
+    { tipo: "pergunta", bg: "./quiz/BG4.png", portal: "🗝 Portal 4", texto: "Bondage", campo: "q21_bondage", menu: ["Nunca fiz e não tenho vontade","Nunca fiz mas tenho curiosidade","Já fiz e não gostei","Já fiz e repetiria com prazer"] },
+    { tipo: "pergunta", bg: "./quiz/BG4.png", portal: "🗝 Portal 4", texto: "Sado Moderado", campo: "q22_sadoModerado", menu: ["Nunca fiz e não tenho vontade","Nunca fiz mas tenho curiosidade","Já fiz e não gostei","Já fiz e repetiria com prazer"] },
+    { tipo: "pergunta", bg: "./quiz/BG4.png", portal: "🗝 Portal 4", texto: "Sado Intenso", campo: "q23_sadoHard", menu: ["Nunca fiz e não tenho vontade","Nunca fiz mas tenho curiosidade","Já fiz e não gostei","Já fiz e repetiria com prazer"] },
+    { tipo: "pergunta", bg: "./quiz/BG4.png", portal: "🗝 Portal 4", texto: "Humilhação erótica do parceiro", campo: "q24_humilhacaoParceiro", menu: ["Nunca fiz e não tenho vontade","Nunca fiz mas tenho curiosidade","Já fiz e não gostei","Já fiz e repetiria com prazer"] },
+    { tipo: "pergunta", bg: "./quiz/BG4.png", portal: "🗝 Portal 4", texto: "Pegging", campo: "q26_pegging", menu: ["Nunca fiz e não tenho vontade","Nunca fiz mas tenho curiosidade","Já fiz e não gostei","Já fiz e repetiria com prazer"] },
+    { tipo: "transicao", bg: "./quiz/BG05P05.png", botao: "Iniciar Portal 5" },
+    { tipo: "pergunta", bg: "./quiz/BG5.png", portal: "🖤 Portal 5", texto: "'Traição' com consentimento", campo: "q27_traicaoCons", menu: ["Nunca fiz e não tenho vontade","Nunca fiz mas tenho curiosidade","Já fiz e não gostei","Já fiz e repetiria com prazer"] },
+    { tipo: "pergunta", bg: "./quiz/BG5.png", portal: "🖤 Portal 5", texto: "Hotwife Clássica", campo: "q28_cuckoldClassico", menu: ["Nunca fiz e não tenho vontade","Nunca fiz mas tenho curiosidade","Já fiz e não gostei","Já fiz e repetiria com prazer"] },
+    { tipo: "pergunta", bg: "./quiz/BG5.png", portal: "🖤 Portal 5", texto: "A Confidência Divina da HotWife", campo: "q29_hotwifeConf", menu: ["Nunca fiz e não tenho vontade","Nunca fiz mas tenho curiosidade","Já fiz e não gostei","Já fiz e repetiria com prazer"] },
+    { tipo: "pergunta", bg: "./quiz/BG5.png", portal: "🖤 Portal 5", texto: "A adoração Sagrada da Hotwife", campo: "q30_hotwifeAdoracao", menu: ["Nunca fiz e não tenho vontade","Nunca fiz mas tenho curiosidade","Já fiz e não gostei","Já fiz e repetiria com prazer"] },
+    { tipo: "pergunta", bg: "./quiz/BG5.png", portal: "🖤 Portal 5", texto: "A Hotwife Soberana", campo: "q31_hotwifeSoberana", menu: ["Nunca fiz e não tenho vontade","Nunca fiz mas tenho curiosidade","Já fiz e não gostei","Já fiz e repetiria com prazer"] },
+    { tipo: "pergunta", bg: "./quiz/BG5.png", portal: "🖤 Portal 5", texto: "O trono da Cuckqueen", campo: "q32_cuckqueenTrono", menu: ["Nunca fiz e não tenho vontade","Nunca fiz mas tenho curiosidade","Já fiz e não gostei","Já fiz e repetiria com prazer"] },
+    { tipo: "pergunta", bg: "./quiz/BG5.png", portal: "🖤 Portal 5", texto: "Banquete Profano da Deusa", campo: "q33_banqueteProfano", menu: ["Nunca fiz e não tenho vontade","Nunca fiz mas tenho curiosidade","Já fiz e não gostei","Já fiz e repetiria com prazer"] },
+    { tipo: "transicao", bg: "./quiz/BGRDOURADOLIMPO.png", botao: "Continuar" },
+    { tipo: "pergunta", bg: "./quiz/BGRDOURADO.png", portal: "✨ Trindade", texto: "Cenário com você, parceiro e outra mulher?", campo: "q34_cenaTrindade", checkbox: ["Beijar e tocar a mulher enquanto o parceiro assiste.","As duas com ele ao mesmo tempo.","Você e ela se divertindo mais entre vocês do que com ele.","Ele focado em te estimular enquanto você brinca com ela.","Revezar."] },
+    { tipo: "pergunta", bg: "./quiz/BGRDOURADO.png", portal: "✨ Trindade", texto: "Seu foco seria…?", campo: "q35_focoTrindade", checkbox: ["Não faria","Sentir tesão com ela.","Dividir o parceiro.","Deixar ele olhar.","Ser o centro.","Observar tudo."] },
+    { tipo: "pergunta", bg: "./quiz/BGRDOURADO.png", portal: "✨ Trindade", texto: "E o ciúmes?", campo: "q36_ciumesTrindade", menu: ["Eu travaria.","Teria ciúmes, mas excitação fala mais alto.","Com regras claras, relaxo.","Me excita ver ele com outra.","Mais ciumenta com ela que com ele."] },
+    { tipo: "pergunta", bg: "./quiz/BGRDOURADO.png", portal: "✨ Rito Dourado", texto: "Golden shower", campo: "q37_goldenNivel", menu: ["Nunca fiz e não tenho vontade","Nunca fiz mas tenho curiosidade","Já fiz e não gostei","Já fiz e repetiria com prazer"] },
+    { tipo: "pergunta", bg: "./quiz/BGRDOURADO.png", portal: "✨ Rito Dourado", texto: "Que vibe?", campo: "q38_goldenVibe", checkbox: ["Nojo.","Curiosidade.","Humilhação erótica.","Dominação intensa.","Intimidade extrema.","Mais ideia que prática."] },
+    { tipo: "pergunta", bg: "./quiz/BGRDOURADO.png", portal: "✨ Rito Dourado", texto: "Qual papel?", campo: "q39_goldenPapel", checkbox: ["Fazer.","Receber.","Alternar.","Assistir.","Nenhuma."] }
+];
 
-    if (!progressEl || !questionEl || !optionsEl || !btnNext) {
-        console.error("Elementos do quiz não encontrados no HTML.");
-        return;
-    }
+window.addEventListener('DOMContentLoaded', () => mostrarTela());
 
-    // Mostra o bloco atual se existir
-    let blocoHtml = "";
-    if (q.bloco) {
-        blocoHtml = `<div style="font-size: 16px; color: #a15cff; margin-bottom: 10px; font-weight: bold;">${q.bloco}</div>`;
-    }
-
-    progressEl.innerHTML = `${blocoHtml}Pergunta ${atual + 1} de ${perguntas.length}`;
-    questionEl.innerText = q.texto;
-
-    let html = "";
-
-    if (q.tipo === "menu") {
-        html = '<select id="sel" required><option value="">⚠️ Selecione uma opção...</option>';
-        html += q.opcoes.map(o => `<option value="${o}">${o}</option>`).join("");
-        html += "</select>";
-    } else if (q.tipo === "checkbox") {
-        html = '<div style="text-align: left;">';
-        html += '<p style="color: #ff6b6b; font-size: 14px; margin-bottom: 10px;">⚠️ Escolha pelo menos uma opção:</p>';
-        q.opcoes.forEach((opcao, i) => {
-            html += `
-                <label style="display: block; margin-bottom: 12px; cursor: pointer; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 6px; transition: 0.3s;">
-                    <input type="checkbox" name="check" value="${opcao}" style="margin-right: 10px; cursor: pointer;">
-                    ${opcao}
-                </label>
-            `;
-        });
-        html += '</div>';
-    }
-
-    optionsEl.innerHTML = html;
-
-    if (atual === perguntas.length - 1) {
-        btnNext.innerText = 'Ver meu Resultado! 🔥';
-    } else {
-        btnNext.innerText = 'Próxima';
-    }
-}
-
-function proxima() {
-    // Bloqueia cliques múltiplos durante envio
-    if (enviando) return;
-
-    const q = perguntas[atual];
-    let resposta = null;
-
-    // VALIDAÇÃO RIGOROSA - MENU SUSPENSO
-    if (q.tipo === "menu") {
-        const sel = document.getElementById("sel");
-        
-        // Verifica se o elemento existe
-        if (!sel) {
-            alert("❌ Erro: elemento de seleção não encontrado!");
-            return;
-        }
-        
-        // Verifica se algo foi selecionado (não pode ser vazio)
-        if (!sel.value || sel.value === "") { 
-            alert("⚠️ Por favor, ESCOLHA UMA OPÇÃO para prosseguir.");
-            sel.focus(); // Coloca o foco no select
-            return;
-        }
-        
-        resposta = sel.value;
-    } 
-    
-    // VALIDAÇÃO RIGOROSA - CHECKBOX (múltipla escolha)
-    else if (q.tipo === "checkbox") {
-        const checks = document.querySelectorAll('input[name="check"]:checked');
-        
-        // Verifica se pelo menos uma opção foi marcada
-        if (checks.length === 0) {
-            alert("⚠️ Por favor, ESCOLHA PELO MENOS UMA OPÇÃO para prosseguir.");
-            return;
-        }
-        
-        // Junta todas as respostas marcadas com vírgula
-        resposta = Array.from(checks).map(c => c.value).join(", ");
-    }
-
-    // Se chegou aqui, a validação passou
-    respostas.push(resposta);
-    atual++;
-
-    // Vai para próxima pergunta ou finaliza
-    if (atual < perguntas.length) {
-        mostrar();
-        window.scrollTo(0, 0); // Rola a página para o topo
-    } else {
-        // Quiz finalizado - envia respostas
-        mudarTelaEnviando("Processando suas respostas... 🔥");
-        enviarRespostas();
-    }
-}
-
-async function enviarRespostas() {
-    enviando = true;
-    
-    console.log('📤 Enviando respostas:', respostas);
-    
-    const formData = new FormData();
-    formData.append('respostas', JSON.stringify(respostas));
-
-    try {
-        const response = await fetch(WEBAPP_URL, {
-            method: 'POST',
-            body: formData
-        });
-
-        console.log('✅ Resposta recebida:', response.status);
-        
-        const resultado = await response.text();
-        console.log('📄 Conteúdo da resposta:', resultado);
-
-        if (response.ok) {
-            mudarTelaEnviando("✅ Respostas enviadas com sucesso! Obrigado por participar! 🔥");
-        } else {
-            throw new Error('Erro na resposta do servidor');
-        }
-
-    } catch (erro) {
-        console.error('❌ Erro ao enviar:', erro);
-        mudarTelaEnviando("❌ Erro ao enviar as respostas. Tentando novamente...");
-        enviando = false;
-        
-        setTimeout(() => {
-            location.reload();
-        }, 3000);
-    }
-}
-
-function mudarTelaEnviando(mensagem) {
+function mostrarTela() {
+    const tela = telas[telaAtual];
+    const body = document.body;
     const container = document.getElementById("quiz-container");
-    if (container) {
-        container.innerHTML = `
-            <div style="padding: 40px; text-align: center;">
-                <h2 style="font-size: 24px; margin-bottom: 20px;">${mensagem}</h2>
-                <div style="font-size: 50px;">⏳</div>
-            </div>
-        `;
+    body.style.backgroundImage = `url('${tela.bg}')`;
+    body.style.backgroundSize = 'cover';
+    body.style.backgroundPosition = 'center';
+    body.style.backgroundAttachment = 'fixed';
+    
+    if (tela.tipo === "transicao") {
+        container.innerHTML = `<button id="btn-next" onclick="proximaTela()" style="margin-top: 400px;">${tela.botao}</button>`;
+    } else if (tela.tipo === "pergunta") {
+        let html = '';
+        if (tela.portal) html += `<div style="font-size:14px;color:#a15cff;margin-bottom:10px;">${tela.portal}</div>`;
+        const numP = telas.filter((t, i) => i <= telaAtual && t.tipo === "pergunta").length;
+        const totalP = telas.filter(t => t.tipo === "pergunta").length;
+        html += `<div id="progress">Pergunta ${numP} de ${totalP}</div>`;
+        html += `<div id="question-box">${tela.texto}</div><div id="options-box">`;
+        if (tela.menu) {
+            html += '<select id="resposta" required><option value="">⚠️ Selecione...</option>';
+            tela.menu.forEach(o => html += `<option value="${o}">${o}</option>`);
+            html += '</select>';
+        } else if (tela.checkbox) {
+            html += '<p style="color:#ff6b6b;font-size:14px;margin-bottom:10px;">⚠️ Escolha pelo menos uma:</p>';
+            tela.checkbox.forEach(o => html += `<label style="display:block;margin-bottom:12px;cursor:pointer;padding:10px;background:rgba(255,255,255,0.05);border-radius:6px;"><input type="checkbox" name="check" value="${o}" style="margin-right:10px;cursor:pointer;">${o}</label>`);
+        }
+        html += '</div><button id="btn-next" onclick="proximaTela()">Próxima</button>';
+        container.innerHTML = html;
     }
+    window.scrollTo(0, 0);
 }
 
-// Inicializa o quiz quando a página carregar
-window.addEventListener('DOMContentLoaded', () => {
-    mostrar();
-});
+function proximaTela() {
+    if (enviando) return;
+    const tela = telas[telaAtual];
+    if (tela.tipo === "pergunta") {
+        let resp = null;
+        if (tela.menu) {
+            const sel = document.getElementById("resposta");
+            if (!sel || !sel.value) { alert("⚠️ Escolha uma opção!"); return; }
+            resp = sel.value;
+            if (tela.menu[0] === "Nunca fiz e não tenho vontade") resp = tela.menu.indexOf(sel.value) + 1;
+        } else if (tela.checkbox) {
+            const checks = document.querySelectorAll('input[name="check"]:checked');
+            if (checks.length === 0) { alert("⚠️ Escolha pelo menos uma opção!"); return; }
+            resp = Array.from(checks).map(c => c.value);
+        }
+        answers[tela.campo] = resp;
+    }
+    telaAtual++;
+    if (telaAtual >= telas.length) { calcularResultado(); } else { mostrarTela(); }
+}
+
+function calcularResultado() {
+    const s = { HESTIA: 10, ATENA: 10, PERSEFONE: 10, AFRODITE: 10, LILITH: 10 };
+    const max = Math.max(...Object.values(s));
+    const vencedor = Object.keys(s).find(k => s[k] === max) || "PERSEFONE";
+    mostrarResultado(vencedor);
+}
+
+function mostrarResultado(deusa) {
+    const resultados = {
+        HESTIA: { titulo: "Héstia – Fogo Contido", texto: "Cuidado, estabilidade, responsabilidade. Seu prazer ficou em último lugar. Hora de acender seu próprio fogo." },
+        ATENA: { titulo: "Atena – A Racional", texto: "Brilhante e analítica, mas a mente levanta um muro entre você e o prazer. Desça da cabeça pro corpo." },
+        PERSEFONE: { titulo: "Perséfone – Entre Dois Mundos", texto: "Educada por fora, curiosa por dentro. Metade correta, metade querendo explorar. Integre seus lados." },
+        AFRODITE: { titulo: "Afrodite – Em Despertar", texto: "Desejo existe, corpo fala, energia magnética. Pare de pedir desculpa pelo que sente." },
+        LILITH: { titulo: "Lilith – Indomável", texto: "Intensidade, profundidade, sem viver morno. Refine sua força, não se dome." }
+    };
+    const r = resultados[deusa];
+    const body = document.body;
+    const container = document.getElementById("quiz-container");
+    body.style.backgroundImage = `url('./quiz/BGRESULT.jpg')`;
+    container.innerHTML = `<h1 style="font-size:28px;margin-bottom:20px;color:#a15cff;">${r.titulo}</h1><p style="font-size:18px;line-height:1.6;white-space:pre-wrap;">${r.texto}</p>`;
+    enviarParaPlanilha();
+}
+
+async function enviarParaPlanilha() {
+    const formData = new FormData();
+    formData.append('respostas', JSON.stringify(Object.values(answers)));
+    try {
+        await fetch(WEBAPP_URL, { method: 'POST', body: formData });
+        console.log('✅ Enviado!');
+    } catch (e) {
+        console.error('Erro:', e);
+    }
+}
