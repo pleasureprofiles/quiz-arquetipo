@@ -3,101 +3,132 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Perfis de Prazer</title>
+  <title>Oráculo das Deusas</title>
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
-
     body {
-      font-family: Arial, sans-serif;
-      background: radial-gradient(circle at top, #3b1f4a 0, #050007 45%, #000 100%);
+      font-family: 'Georgia', serif;
       color: #fff;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
     }
-
     #quiz-container {
       width: 100%;
-      max-width: 640px;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 0 25px rgba(0, 0, 0, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(15, 10, 25, 0.96);
-      padding: 30px;
+      max-width: 700px;
+      border-radius: 16px;
+      padding: 40px;
       text-align: center;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
-
     #progress {
-      font-size: 18px;
-      margin-bottom: 15px;
-    }
-
-    #question-box {
-      font-size: 22px;
+      font-size: 16px;
       margin-bottom: 20px;
+      opacity: 0.9;
     }
-
+    #question-box {
+      font-size: 24px;
+      margin-bottom: 30px;
+      line-height: 1.4;
+      font-weight: 300;
+    }
     #options-box {
-      margin-bottom: 25px;
+      margin-bottom: 30px;
       text-align: left;
     }
-
     select {
       width: 100%;
-      padding: 12px;
+      padding: 14px;
       border-radius: 8px;
-      border: none;
+      border: 1px solid rgba(255, 255, 255, 0.2);
       background: rgba(255, 255, 255, 0.1);
       color: #fff;
       font-size: 16px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 10px;
-      font-size: 18px;
-    }
-
-    button {
-      width: 100%;
-      padding: 14px;
-      background: #8c2aff;
-      color: #fff;
-      font-size: 18px;
-      border: none;
-      border-radius: 10px;
       cursor: pointer;
       transition: 0.3s;
     }
-
+    select:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+    select option {
+      background: #2a1a3d;
+      color: #fff;
+    }
+    label {
+      display: block;
+      margin-bottom: 12px;
+      font-size: 16px;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+      border: 1px solid transparent;
+    }
+    label:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(140, 42, 255, 0.5);
+    }
+    input[type="checkbox"] {
+      margin-right: 10px;
+      cursor: pointer;
+      width: 18px;
+      height: 18px;
+    }
+    button {
+      width: 100%;
+      max-width: 400px;
+      padding: 16px;
+      background: linear-gradient(135deg, #8c2aff 0%, #a15cff 100%);
+      color: #fff;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 4px 15px rgba(140, 42, 255, 0.4);
+    }
     button:hover {
-      background: #a15cff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(140, 42, 255, 0.6);
+    }
+    button:active {
+      transform: translateY(0);
+    }
+    h1 {
+      font-size: 32px;
+      margin-bottom: 20px;
+      font-weight: 300;
+    }
+    p {
+      font-size: 18px;
+      line-height: 1.8;
+      text-align: left;
+      white-space: pre-wrap;
     }
   </style>
 </head>
 <body>
-
   <div id="quiz-container">
     <div id="progress"></div>
     <div id="question-box"></div>
     <div id="options-box"></div>
-    <button id="btn-next" onclick="proxima()">Próxima</button>
+    <button id="btn-next" onclick="proximaTela()">Próxima</button>
   </div>
-
-  <!-- Formulário invisível para mandar as respostas direto pro Apps Script -->
-  <form id="sendForm" method="POST" style="display:none;">
-    <input type="hidden" name="respostas" id="respostas-input">
-  </form>
-
-  <!-- v=10 força o navegador a pegar a versão nova do JS -->
-  <script src="quiz.js?v=10"></script>
-
+  <script src="quiz.js"></script>
 </body>
 </html>
