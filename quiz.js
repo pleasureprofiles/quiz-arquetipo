@@ -3,7 +3,7 @@ const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbx25OnBB3BgbSK_1PcmH
 const answers = {};
 let telaAtual = 0;
 let enviando = false;
-const imageCache = new Map();
+const imageCache = {};
 
 const telas = [
     { tipo: "transicao", bg: "./quiz/BGBV.jpg", botao: "Começar sua Jornada" },
@@ -54,38 +54,24 @@ const telas = [
     { tipo: "pergunta", bg: "./quiz/BGRDOURADO.png", texto: "Qual papel?", campo: "q39_goldenPapel", checkbox: ["Fazer","Receber","Alternar","Assistir","Nenhuma"] }
 ];
 
-function preloadImage(url) {
-    if (imageCache.has(url)) return Promise.resolve(url);
-    return new Promise((resolve) => {
-        const img = new Image();
-        img.onload = () => {
-            imageCache.set(url, true);
-            resolve(url);
-        };
-        img.onerror = () => resolve(url);
-        img.src = url;
+function preloadAllImages() {
+    const uniqueImages = [...new Set(telas.map(t => t.bg))];
+    uniqueImages.forEach(url => {
+        if (!imageCache[url]) {
+            const img = new Image();
+            img.src = url;
+            imageCache[url] = img;
+        }
     });
 }
 
-async function preloadNextImages() {
-    const next = telaAtual + 1;
-    if (next < telas.length) {
-        preloadImage(telas[next].bg);
-        if (next + 1 < telas.length) {
-            preloadImage(telas[next + 1].bg);
-        }
-    }
-}
-
-async function mostrarTela() {
+function mostrarTela() {
     const tela = telas[telaAtual];
     const body = document.body;
     const container = document.getElementById("quiz-container");
     const btnContainer = document.getElementById("btn-container");
     
-    await preloadImage(tela.bg);
     body.style.backgroundImage = `url('${tela.bg}')`;
-    container.classList.add('fade-in');
     
     if (tela.tipo === "transicao") {
         container.innerHTML = '';
@@ -106,9 +92,7 @@ async function mostrarTela() {
         btnContainer.innerHTML = '<button onclick="proximaTela()">Próxima</button>';
     }
     
-    preloadNextImages();
     window.scrollTo(0, 0);
-    setTimeout(() => container.classList.remove('fade-in'), 400);
 }
 
 function proximaTela() {
@@ -155,7 +139,7 @@ function calcularResultado() {
     mostrarResultado(vencedor);
 }
 
-async function mostrarResultado(deusa) {
+function mostrarResultado(deusa) {
     const resultados = {
         HESTIA: { titulo: "Héstia – Fogo Contido", texto: "Você é da linhagem de Héstia: a Deusa do fogo do lar.\n\nSua força mora no cuidado, na estabilidade, em manter tudo funcionando." },
         ATENA: { titulo: "Atena – A Racional", texto: "Você é da linhagem de Atena: a Deusa Racional.\n\nBrilhante, analítica, rápida para entender tudo – menos quando o assunto é sentir." },
@@ -169,7 +153,6 @@ async function mostrarResultado(deusa) {
     const container = document.getElementById("quiz-container");
     const btnContainer = document.getElementById("btn-container");
     
-    await preloadImage('./quiz/BGRESULT.jpg');
     body.style.backgroundImage = `url('./quiz/BGRESULT.jpg')`;
     container.innerHTML = `<h1>${r.titulo}</h1><p>${r.texto}</p>`;
     btnContainer.innerHTML = '';
@@ -187,4 +170,7 @@ async function enviarParaPlanilha() {
     }
 }
 
-window.addEventListener('DOMContentLoaded', () => mostrarTela());
+window.addEventListener('DOMContentLoaded', () => {
+    preloadAllImages();
+    mostrarTela();
+});
