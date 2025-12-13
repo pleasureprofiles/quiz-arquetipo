@@ -149,10 +149,17 @@ function mostrarTela() {
         container.innerHTML = '';
         btnContainer.innerHTML = `<button type="button" id="btn-avancar">${tela.botao}</button>`;
         
-        document.getElementById('btn-avancar').addEventListener('click', function(e) {
-            e.preventDefault();
-            avancarTela();
-        });
+        // Usa setTimeout para garantir que o DOM foi atualizado
+        setTimeout(function() {
+            const btn = document.getElementById('btn-avancar');
+            if (btn) {
+                btn.onclick = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    avancarTela();
+                };
+            }
+        }, 50);
         
     } else if (tela.tipo === "pergunta") {
         let html = `<div id="question-box">
@@ -168,12 +175,19 @@ function mostrarTela() {
             container.innerHTML = html;
             btnContainer.innerHTML = '';
             
-            document.getElementById('resposta').addEventListener('change', function() {
-                if (this.value) {
-                    salvarRespostaMenu();
-                    setTimeout(() => avancarTela(), 300);
+            setTimeout(function() {
+                const sel = document.getElementById('resposta');
+                if (sel) {
+                    sel.onchange = function() {
+                        if (this.value) {
+                            salvarRespostaMenu();
+                            setTimeout(function() {
+                                avancarTela();
+                            }, 300);
+                        }
+                    };
                 }
-            });
+            }, 50);
             
         } else if (tela.checkbox) {
             tela.checkbox.forEach(o => html += `<label><input type="checkbox" name="check" value="${o}">${o}</label>`);
@@ -181,10 +195,16 @@ function mostrarTela() {
             container.innerHTML = html;
             btnContainer.innerHTML = '<button type="button" id="btn-proxima">Próxima</button>';
             
-            document.getElementById('btn-proxima').addEventListener('click', function(e) {
-                e.preventDefault();
-                validarCheckboxEAvancar();
-            });
+            setTimeout(function() {
+                const btn = document.getElementById('btn-proxima');
+                if (btn) {
+                    btn.onclick = function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        validarCheckboxEAvancar();
+                    };
+                }
+            }, 50);
         }
     }
     
@@ -196,11 +216,8 @@ function salvarRespostaMenu() {
     const sel = document.getElementById("resposta");
     
     if (sel && sel.value) {
-        let resp = sel.value;
-        if (tela.menu[0] === "Nunca fiz e não tenho vontade") {
-            resp = tela.menu.indexOf(sel.value) + 1;
-        }
-        answers[tela.campo] = resp;
+        // SEMPRE salva como texto, nunca converte para número
+        answers[tela.campo] = sel.value;
     }
 }
 
@@ -224,17 +241,9 @@ function validarCheckboxEAvancar() {
         return;
     }
     
-    answers[tela.campo] = Array.from(checks).map(c => c.value);
+    // Salva como array de textos, junta com vírgula
+    answers[tela.campo] = Array.from(checks).map(c => c.value).join(", ");
     avancarTela();
-}
-
-function proximaTela() {
-    const tela = telas[telaAtual];
-    if (tela.tipo === "transicao") {
-        avancarTela();
-    } else if (tela.checkbox) {
-        validarCheckboxEAvancar();
-    }
 }
 
 function calcularResultado() {
@@ -319,7 +328,8 @@ No Oráculo das Deusas, seu caminho não é "se domar", e sim refinar sua força
 async function enviarParaPlanilha() {
     enviando = true;
     const formData = new FormData();
-    formData.append('respostas', JSON.stringify(Object.values(answers)));
+    // Envia as respostas como texto
+    formData.append('respostas', JSON.stringify(answers));
     try {
         await fetch(WEBAPP_URL, { method: 'POST', body: formData });
         console.log('✅ Enviado!');
@@ -330,7 +340,7 @@ async function enviarParaPlanilha() {
     }
 }
 
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', function() {
     const styleEl = document.createElement('style');
     styleEl.id = 'dynamic-btn-style';
     document.head.appendChild(styleEl);
