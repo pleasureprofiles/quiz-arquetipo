@@ -139,10 +139,7 @@ function mostrarTela() {
     const container = document.getElementById("quiz-container");
     const btnContainer = document.getElementById("btn-container");
     
-    // Aplica background
     body.style.backgroundImage = `url('${tela.bg}')`;
-    
-    // Aplica paleta de cores ao botão
     aplicarPaletaBotao(tela.paleta);
     
     if (tela.tipo === "transicao") {
@@ -215,7 +212,6 @@ function salvarRespostaMenu() {
     const sel = document.getElementById("resposta");
     
     if (sel && sel.value) {
-        // Salva como texto
         answers[tela.campo] = sel.value;
     }
 }
@@ -240,7 +236,6 @@ function validarCheckboxEAvancar() {
         return;
     }
     
-    // Salva como texto separado por vírgula
     answers[tela.campo] = Array.from(checks).map(c => c.value).join(", ");
     avancarTela();
 }
@@ -326,19 +321,67 @@ No Oráculo das Deusas, seu caminho não é "se domar", e sim refinar sua força
 
 async function enviarParaPlanilha() {
     enviando = true;
-    const formData = new FormData();
     
-    // VOLTANDO AO FORMATO ORIGINAL: Array de valores (como texto)
-    formData.append('respostas', JSON.stringify(Object.values(answers)));
+    // Pega os valores na ordem das perguntas
+    const respostasArray = Object.values(answers);
+    
+    console.log('📤 Preparando envio...');
+    console.log('📋 Total de respostas:', respostasArray.length);
+    console.log('📝 Respostas:', respostasArray);
     
     try {
+        // Método 1: FormData (original)
+        const formData = new FormData();
+        formData.append('respostas', JSON.stringify(respostasArray));
+        
+        console.log('🚀 Enviando para:', WEBAPP_URL);
+        
         const response = await fetch(WEBAPP_URL, { 
-            method: 'POST', 
-            body: formData 
+            method: 'POST',
+            body: formData
         });
-        console.log('✅ Enviado!', response);
+        
+        console.log('📨 Status da resposta:', response.status);
+        
+        // Tenta ler a resposta
+        const responseText = await response.text();
+        console.log('📩 Resposta do servidor:', responseText);
+        
+        try {
+            const responseJson = JSON.parse(responseText);
+            if (responseJson.status === 'success') {
+                console.log('✅ Enviado com sucesso!');
+            } else {
+                console.log('⚠️ Resposta:', responseJson);
+            }
+        } catch (e) {
+            console.log('📄 Resposta (texto):', responseText);
+        }
+        
     } catch (e) {
         console.error('❌ Erro ao enviar:', e);
+        console.error('❌ Tipo do erro:', e.name);
+        console.error('❌ Mensagem:', e.message);
+        
+        // Tenta método alternativo se o primeiro falhar
+        console.log('🔄 Tentando método alternativo...');
+        try {
+            const params = new URLSearchParams();
+            params.append('respostas', JSON.stringify(respostasArray));
+            
+            const response2 = await fetch(WEBAPP_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: params.toString()
+            });
+            
+            const text2 = await response2.text();
+            console.log('📩 Resposta método 2:', text2);
+        } catch (e2) {
+            console.error('❌ Método 2 também falhou:', e2);
+        }
     } finally {
         enviando = false;
     }
