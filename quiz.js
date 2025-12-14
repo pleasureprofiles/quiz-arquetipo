@@ -149,7 +149,6 @@ function mostrarTela() {
         container.innerHTML = '';
         btnContainer.innerHTML = `<button type="button" id="btn-avancar">${tela.botao}</button>`;
         
-        // Usa setTimeout para garantir que o DOM foi atualizado
         setTimeout(function() {
             const btn = document.getElementById('btn-avancar');
             if (btn) {
@@ -216,7 +215,7 @@ function salvarRespostaMenu() {
     const sel = document.getElementById("resposta");
     
     if (sel && sel.value) {
-        // SEMPRE salva como texto, nunca converte para número
+        // Salva como texto
         answers[tela.campo] = sel.value;
     }
 }
@@ -241,7 +240,7 @@ function validarCheckboxEAvancar() {
         return;
     }
     
-    // Salva como array de textos, junta com vírgula
+    // Salva como texto separado por vírgula
     answers[tela.campo] = Array.from(checks).map(c => c.value).join(", ");
     avancarTela();
 }
@@ -328,13 +327,18 @@ No Oráculo das Deusas, seu caminho não é "se domar", e sim refinar sua força
 async function enviarParaPlanilha() {
     enviando = true;
     const formData = new FormData();
-    // Envia as respostas como texto
-    formData.append('respostas', JSON.stringify(answers));
+    
+    // VOLTANDO AO FORMATO ORIGINAL: Array de valores (como texto)
+    formData.append('respostas', JSON.stringify(Object.values(answers)));
+    
     try {
-        await fetch(WEBAPP_URL, { method: 'POST', body: formData });
-        console.log('✅ Enviado!');
+        const response = await fetch(WEBAPP_URL, { 
+            method: 'POST', 
+            body: formData 
+        });
+        console.log('✅ Enviado!', response);
     } catch (e) {
-        console.error('Erro:', e);
+        console.error('❌ Erro ao enviar:', e);
     } finally {
         enviando = false;
     }
