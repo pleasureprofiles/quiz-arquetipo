@@ -2,48 +2,91 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Oráculo das Deusas</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
   <style>
+    :root {
+      --gold: #D4AF37;
+      --gold-light: #F4E4BC;
+      --gold-dark: #A68A2E;
+      --dark: #0a0a0f;
+      --glass-bg: rgba(255, 255, 255, 0.08);
+      --glass-border: rgba(255, 255, 255, 0.15);
+      --text-primary: #ffffff;
+      --text-secondary: rgba(255, 255, 255, 0.75);
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-tap-highlight-color: transparent;
     }
-    html, body {
-      width: 100%;
-      height: 100%;
-      overflow-x: hidden;
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
     }
+
     body {
-      font-family: 'Segoe UI', 'Arial', 'Helvetica', sans-serif;
-      color: #fff;
+      font-family: 'Raleway', sans-serif;
+      color: var(--text-primary);
+      min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0;
-      background-color: #000;
+      background-color: var(--dark);
       background-size: cover;
-      background-position: center center;
+      background-position: center;
       background-repeat: no-repeat;
-      background-attachment: scroll;
-      position: relative;
-      min-height: 100vh;
-      transition: background-image 0.3s ease;
+      background-attachment: fixed;
+      overflow-x: hidden;
+      transition: background-image 0.6s ease-in-out;
     }
+
+    /* Overlay gradiente para melhor legibilidade */
     body::before {
       content: '';
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.3) 0%,
+        rgba(0, 0, 0, 0.1) 40%,
+        rgba(0, 0, 0, 0.4) 100%
+      );
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Progress Bar */
+    #progress-container {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      height: 100%;
-      background-image: inherit;
-      background-size: cover;
-      background-position: center;
-      z-index: -1;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.1);
+      z-index: 1000;
     }
+
+    #progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-light));
+      transition: width 0.5s ease-out;
+      box-shadow: 0 0 10px var(--gold);
+    }
+
+    /* Container Principal */
     #quiz-container {
       flex: 1;
       display: flex;
@@ -51,227 +94,423 @@
       justify-content: center;
       align-items: center;
       width: 100%;
-      max-width: 600px;
-      padding: 20px;
-      padding-bottom: 120px;
-      text-align: center;
-      background: transparent;
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 60px 24px 140px;
+      position: relative;
+      z-index: 1;
     }
-    
-    /* PERGUNTAS - Melhor legibilidade */
+
+    /* Caixa de Pergunta - Glassmorphism Premium */
     #question-box {
-      margin-bottom: 25px;
-      padding: 22px 20px;
-      background: rgba(0, 0, 0, 0.55);
-      border-radius: 15px;
-      backdrop-filter: blur(5px);
-      -webkit-backdrop-filter: blur(5px);
+      width: 100%;
+      padding: 32px 28px;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.12) 0%,
+        rgba(255, 255, 255, 0.05) 100%
+      );
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      margin-bottom: 28px;
+      animation: fadeSlideUp 0.6s ease-out;
     }
+
     .question-title {
-      font-size: 21px;
-      font-weight: 600;
-      line-height: 1.5;
-      color: #fff;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
-      margin-bottom: 10px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.75rem;
+      font-weight: 500;
+      line-height: 1.4;
+      color: var(--text-primary);
+      text-align: center;
+      letter-spacing: 0.02em;
+      margin-bottom: 0;
     }
-    /* DESCRIÇÃO - Maior e SEM itálico */
+
     .question-desc {
-      font-size: 17px;
+      font-family: 'Raleway', sans-serif;
+      font-size: 1rem;
       font-weight: 400;
-      line-height: 1.6;
-      color: rgba(255, 255, 255, 0.95);
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
-      font-style: normal;
-      margin-top: 10px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      text-align: center;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
-    
+
+    /* Opções */
     #options-box {
       width: 100%;
-      max-width: 450px;
-      margin-bottom: 20px;
-      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      animation: fadeSlideUp 0.6s ease-out 0.1s both;
     }
+
+    /* Select Moderno */
     select {
       width: 100%;
-      padding: 14px 16px;
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      background: rgba(0, 0, 0, 0.5);
-      color: #fff;
-      font-size: 15px;
-      font-weight: 500;
+      padding: 18px 48px 18px 20px;
+      font-family: 'Raleway', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--text-primary);
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.1) 0%,
+        rgba(255, 255, 255, 0.05) 100%
+      );
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
       cursor: pointer;
-      transition: 0.3s;
-      -webkit-appearance: none;
+      transition: var(--transition);
       appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23fff' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.6)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
       background-repeat: no-repeat;
-      background-position: right 14px center;
+      background-position: right 16px center;
+      background-size: 20px;
     }
-    select:focus {
+
+    select:hover, select:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15), var(--shadow);
       outline: none;
-      border-color: rgba(255, 255, 255, 0.6);
-      background-color: rgba(0, 0, 0, 0.6);
     }
+
     select option {
       background: #1a1a2e;
-      color: #fff;
-      padding: 12px;
+      color: var(--text-primary);
+      padding: 16px;
     }
+
+    /* Labels Checkbox - Cards Elegantes */
     label {
-      display: block;
-      margin-bottom: 10px;
-      font-size: 14px;
-      font-weight: 500;
-      padding: 12px 15px;
-      background: rgba(0, 0, 0, 0.45);
-      border-radius: 12px;
-      cursor: pointer;
-      transition: 0.3s;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      line-height: 1.4;
-      color: #fff;
-    }
-    label:hover {
-      background: rgba(0, 0, 0, 0.6);
-      border-color: rgba(255, 255, 255, 0.35);
-    }
-    label:has(input:checked) {
-      background: rgba(255, 255, 255, 0.15);
-      border-color: rgba(255, 255, 255, 0.5);
-    }
-    input[type="checkbox"] {
-      margin-right: 10px;
-      cursor: pointer;
-      width: 18px;
-      height: 18px;
-      vertical-align: middle;
-      accent-color: #d4af37;
-    }
-    #btn-container {
-      width: 100%;
-      padding: 25px 20px 35px;
       display: flex;
-      justify-content: center;
-      align-items: flex-end;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 20px;
+      font-size: 0.95rem;
+      font-weight: 400;
+      line-height: 1.5;
+      color: var(--text-primary);
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.08) 0%,
+        rgba(255, 255, 255, 0.03) 100%
+      );
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    label::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--gold), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    label:hover {
+      border-color: rgba(212, 175, 55, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    label:has(input:checked) {
+      border-color: var(--gold);
+      background: linear-gradient(
+        135deg,
+        rgba(212, 175, 55, 0.2) 0%,
+        rgba(212, 175, 55, 0.08) 100%
+      );
+    }
+
+    label:has(input:checked)::before {
+      opacity: 0.1;
+    }
+
+    /* Checkbox Custom */
+    input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      min-width: 22px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      background: transparent;
+    }
+
+    input[type="checkbox"]:checked {
+      background: var(--gold);
+      border-color: var(--gold);
+    }
+
+    input[type="checkbox"]:checked::after {
+      content: '';
+      position: absolute;
+      left: 6px;
+      top: 2px;
+      width: 6px;
+      height: 12px;
+      border: solid #000;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+
+    /* Container do Botão */
+    #btn-container {
       position: fixed;
       bottom: 0;
       left: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 60%, transparent 100%);
+      right: 0;
+      padding: 24px 24px 36px;
+      display: flex;
+      justify-content: center;
+      background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.95) 0%,
+        rgba(0, 0, 0, 0.7) 50%,
+        transparent 100%
+      );
       z-index: 100;
-      min-height: 90px;
     }
+
+    /* Botão Premium */
     #btn-container button {
-      width: auto;
-      min-width: 180px;
-      max-width: 280px;
-      padding: 14px 32px;
-      font-size: 15px;
+      padding: 16px 48px;
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.95rem;
       font-weight: 600;
-      font-family: 'Segoe UI', 'Arial', sans-serif;
-      letter-spacing: 0.5px;
-      border-radius: 25px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #000;
+      background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%);
+      border: none;
+      border-radius: 50px;
       cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      text-rendering: optimizeLegibility;
+      transition: var(--transition);
+      box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4), 0 0 0 0 rgba(212, 175, 55, 0);
+      position: relative;
+      overflow: hidden;
     }
+
+    #btn-container button::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+
+    #btn-container button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(212, 175, 55, 0.5), 0 0 40px rgba(212, 175, 55, 0.2);
+    }
+
+    #btn-container button:hover::before {
+      transform: translateX(100%);
+    }
+
     #btn-container button:active {
-      transform: translateY(0);
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+      transform: translateY(-1px);
     }
-    
-    /* RESULTADO */
+
+    /* Resultado */
     .resultado-box {
-      background: rgba(0, 0, 0, 0.6);
-      border-radius: 20px;
-      padding: 30px 25px;
-      max-width: 550px;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      width: 100%;
+      padding: 40px 32px;
+      background: linear-gradient(
+        135deg,
+        rgba(0, 0, 0, 0.7) 0%,
+        rgba(0, 0, 0, 0.5) 100%
+      );
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--glass-border);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      animation: fadeScaleIn 0.8s ease-out;
     }
+
     .resultado-box h1 {
-      font-size: 24px;
-      margin-bottom: 20px;
-      font-weight: 600;
-      line-height: 1.4;
-      text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
-      color: #FFD700;
-      text-align: center;
-    }
-    .resultado-box p {
-      font-size: 15px;
-      line-height: 1.8;
-      text-align: left;
-      white-space: pre-wrap;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
-      color: #fff;
-      padding: 0;
-      max-width: none;
-    }
-    
-    /* Títulos antigos (compatibilidade) */
-    h1 {
-      font-size: 26px;
-      margin-bottom: 25px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
       font-weight: 500;
-      line-height: 1.4;
-      text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
-      padding: 0 20px;
+      line-height: 1.3;
+      text-align: center;
+      margin-bottom: 24px;
+      background: linear-gradient(135deg, var(--gold-light), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
-    p {
-      font-size: 16px;
-      line-height: 1.8;
-      text-align: left;
+
+    .resultado-box p {
+      font-family: 'Raleway', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.9;
+      color: var(--text-secondary);
       white-space: pre-wrap;
-      text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
-      padding: 0 20px;
-      max-width: 500px;
+      text-align: left;
     }
-    
+
+    /* Animações */
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeScaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+      }
+      50% {
+        box-shadow: 0 4px 30px rgba(212, 175, 55, 0.6);
+      }
+    }
+
+    /* Transição de tela */
+    .fade-out {
+      animation: fadeOut 0.3s ease-out forwards;
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        transform: translateY(-16px);
+      }
+    }
+
+    /* Responsivo */
     @media (max-width: 480px) {
+      html {
+        font-size: 15px;
+      }
+
+      #quiz-container {
+        padding: 50px 20px 130px;
+      }
+
+      #question-box {
+        padding: 28px 22px;
+        border-radius: 20px;
+      }
+
       .question-title {
-        font-size: 19px;
+        font-size: 1.5rem;
       }
-      /* DESCRIÇÃO MOBILE - também maior */
+
       .question-desc {
-        font-size: 16px;
+        font-size: 0.95rem;
       }
+
+      label {
+        padding: 14px 16px;
+        font-size: 0.9rem;
+        border-radius: 12px;
+      }
+
+      select {
+        padding: 16px 44px 16px 18px;
+        font-size: 0.95rem;
+        border-radius: 14px;
+      }
+
+      #btn-container {
+        padding: 20px 20px 32px;
+      }
+
       #btn-container button {
-        font-size: 14px;
-        padding: 13px 28px;
-        min-width: 160px;
+        padding: 15px 40px;
+        font-size: 0.9rem;
       }
+
       .resultado-box {
-        padding: 25px 20px;
-        margin: 0 10px;
+        padding: 32px 24px;
+        border-radius: 24px;
       }
+
       .resultado-box h1 {
-        font-size: 20px;
+        font-size: 1.5rem;
       }
+
       .resultado-box p {
-        font-size: 14px;
-        line-height: 1.7;
-      }
-      select, label {
-        font-size: 14px;
+        font-size: 0.95rem;
+        line-height: 1.8;
       }
     }
-    
-    .fade-in {
-      animation: fadeIn 0.4s ease-in;
+
+    /* Efeito de loading no botão */
+    button.loading {
+      pointer-events: none;
+      opacity: 0.7;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+
+    button.loading::after {
+      content: '';
+      width: 16px;
+      height: 16px;
+      border: 2px solid transparent;
+      border-top-color: #000;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-left: 10px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Ocultar elementos vazios */
+    #quiz-container:empty,
+    #btn-container:empty {
+      display: none;
     }
   </style>
 </head>
 <body>
+  <div id="progress-container">
+    <div id="progress-bar"></div>
+  </div>
   <div id="quiz-container"></div>
   <div id="btn-container"></div>
   <script src="quiz.js"></script>
