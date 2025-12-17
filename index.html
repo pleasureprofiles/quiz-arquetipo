@@ -20,6 +20,7 @@
       --bg: #fafafa;
       --text: #111111;
       --text-secondary: #555555;
+      --text-light: #888888;
       --border: #e0e0e0;
       --accent: #111111;
       --accent-hover: #333333;
@@ -64,6 +65,7 @@
       min-height: 100vh;
     }
 
+    /* TELA INICIAL / BOAS-VINDAS */
     .tela-inicial {
       display: flex;
       flex-direction: column;
@@ -73,21 +75,41 @@
       text-align: center;
     }
 
+    .badge-18 {
+      display: inline-block;
+      padding: 8px 20px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--text);
+      border: 2px solid var(--text);
+      border-radius: 4px;
+      margin-bottom: 32px;
+    }
+
     .tela-inicial h1 {
-      font-size: 2.2rem;
+      font-size: 2.4rem;
       font-weight: 700;
       letter-spacing: -0.03em;
       line-height: 1.2;
       margin-bottom: 24px;
     }
 
-    .tela-inicial p {
-      font-size: 1.1rem;
+    .tela-inicial .subtitulo {
+      font-size: 1.2rem;
       color: var(--text-secondary);
-      max-width: 400px;
-      margin-bottom: 48px;
+      line-height: 1.6;
+      margin-bottom: 32px;
     }
 
+    .tela-inicial .aviso {
+      font-size: 0.95rem;
+      color: var(--text-light);
+      max-width: 360px;
+      line-height: 1.6;
+    }
+
+    /* PERGUNTAS */
     #question-box {
       margin-bottom: 32px;
     }
@@ -233,6 +255,7 @@
       background: var(--accent-hover);
     }
 
+    /* RESULTADO */
     .resultado-container {
       padding-top: 20px;
     }
@@ -326,7 +349,8 @@
     @media (max-width: 480px) {
       html { font-size: 16px; }
       #quiz-container { padding: 60px 20px 140px; }
-      .tela-inicial h1 { font-size: 1.8rem; }
+      .tela-inicial h1 { font-size: 2rem; }
+      .tela-inicial .subtitulo { font-size: 1.1rem; }
       .question-title { font-size: 1.35rem; }
       select, label { padding: 16px; font-size: 1rem; }
       #btn-container button { width: 100%; padding: 16px 32px; }
