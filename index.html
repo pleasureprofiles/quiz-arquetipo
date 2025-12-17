@@ -1,119 +1,347 @@
-ível 1: Exploração e Descoberta (O Iniciante)
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Teste de Nível de Sexualidade</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-1. Breve Descrição: Foco no autoconhecimento, na intimidade suave e na comunicação básica. A exploração é introspectiva e segura.
+    :root {
+      --bg: #fafafa;
+      --text: #111111;
+      --text-secondary: #555555;
+      --border: #e0e0e0;
+      --accent: #111111;
+      --accent-hover: #333333;
+      --card-bg: #ffffff;
+    }
 
-2. Brinquedos Sugeridos:
+    html {
+      font-size: 18px;
+    }
 
-Vibrador Bullet (Ponta fina e versátil)
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      min-height: 100dvh;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
 
-Óleos de massagem comestíveis
+    #progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--border);
+      z-index: 1000;
+    }
 
-Lubrificante à base de água
+    #progress-bar {
+      height: 100%;
+      width: 0%;
+      background: var(--accent);
+      transition: width 0.4s ease;
+    }
 
-Vibrador tipo Rabbit (Estimulação dupla)
+    #quiz-container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 80px 24px 160px;
+      min-height: 100vh;
+    }
 
-Anel peniano vibratório (para casais)
+    .tela-inicial {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 70vh;
+      text-align: center;
+    }
 
-3. Parceiros Compatíveis: Pessoas que valorizam a ternura, a comunicação clara e que estão dispostas a ir devagar.
+    .tela-inicial h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 24px;
+    }
 
-4. Roupas e Acessórios Sugeridos:
+    .tela-inicial p {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 400px;
+      margin-bottom: 48px;
+    }
 
-Roupas íntimas de renda simples (sutiã e calcinha)
+    #question-box {
+      margin-bottom: 32px;
+    }
 
-Meias 7/8 ou over-the-knee
+    .question-number {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+    }
 
-Máscara de dormir de seda
+    .question-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      line-height: 1.4;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
 
-Halterofilia ou camisola de cetim
+    .question-desc {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-top: 12px;
+    }
 
-Gravata (para restrição leve e toque)
+    #options-box {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
 
-5. Fantasias a Serem Exploradas:
+    select {
+      width: 100%;
+      padding: 18px 48px 18px 18px;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 1.05rem;
+      color: var(--text);
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: border-color 0.2s ease;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+    }
 
-Massagem erótica sensual: Toques não focados apenas no ato sexual, mas em despertar o prazer e a sensualidade no corpo inteiro.
+    select:hover, select:focus {
+      border-color: var(--accent);
+      outline: none;
+    }
 
-Troca de beijos e toques prolongados: Exploração da química através do beijo profundo e carícias em zonas sensíveis (orelhas, pescoço).
+    label {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 18px;
+      font-size: 1.05rem;
+      color: var(--text);
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
 
-Fantasias de Exibicionismo Leve: Usar roupas íntimas ousadas ou não usar nada em casa, com as cortinas abertas, sentindo a adrenalina do risco.
+    label:hover {
+      border-color: var(--accent);
+    }
 
-Exploração de filmes e literatura erótica: Compartilhar o que excita mentalmente para expandir a imaginação e a comunicação.
+    label:has(input:checked) {
+      border-color: var(--accent);
+      background: var(--bg);
+    }
 
-Nível 2: Aprofundamento e Prazer Mútuo (O Explorador)
+    label span {
+      flex: 1;
+      line-height: 1.5;
+    }
 
-1. Breve Descrição: O foco passa da autodescoberta para o aprofundamento da intimidade e a busca por orgasmos mais intensos e variados.
+    input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      min-width: 22px;
+      margin-top: 2px;
+      border: 2px solid var(--border);
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
 
-2. Brinquedos Sugeridos:
+    input[type="checkbox"]:checked {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
 
-Vibrador de Ponto G ou Ponto P (Próstata)
+    input[type="checkbox"]:checked::after {
+      content: '';
+      position: absolute;
+      left: 6px;
+      top: 2px;
+      width: 6px;
+      height: 11px;
+      border: solid #fff;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
 
-Vibrador sem fio/controle remoto (para uso em público)
+    #btn-container {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 24px;
+      background: linear-gradient(to top, var(--bg) 60%, transparent);
+      display: flex;
+      justify-content: center;
+    }
 
-Vibrador Wand (Potência e massagem profunda)
+    #btn-container button {
+      padding: 16px 48px;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #ffffff;
+      background: var(--accent);
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      min-width: 200px;
+    }
 
-Bolas Ben Wa (Para exercícios e sensação interna)
+    #btn-container button:hover {
+      background: var(--accent-hover);
+    }
 
-Plug anal pequeno (Para iniciantes)
+    .resultado-container {
+      padding-top: 20px;
+    }
 
-3. Parceiros Compatíveis: Pessoas que gostam de experimentar novos tipos de orgasmo e valorizam a diversão no sexo.
+    .resultado-nivel {
+      text-align: center;
+      margin-bottom: 48px;
+    }
 
-4. Roupas e Acessórios Sugeridos:
+    .resultado-nivel .nivel-badge {
+      display: inline-block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
 
-Conjuntos strappy (com tiras decorativas)
+    .resultado-nivel h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
 
-Corselet ou espartilho leve
+    .resultado-nivel .subtitulo {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+    }
 
-Algemas de pelúcia (Restrição suave)
+    .resultado-descricao {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: var(--text-secondary);
+      margin-bottom: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid var(--border);
+    }
 
-Meias-calças arrastão (Fishnets)
+    .resultado-secao {
+      margin-bottom: 40px;
+    }
 
-Acessórios com pequenos sinos ou penas
+    .resultado-secao h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
 
-5. Fantasias a Serem Exploradas:
+    .resultado-secao ul {
+      list-style: none;
+    }
 
-Sexo em lugares não convencionais: Praticar intimidade em locais privados, mas com a adrenalina do risco de serem flagrados.
+    .resultado-secao li {
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
 
-Venda Sensorial: Retirar a visão ou audição para amplificar os outros sentidos e a entrega.
+    .resultado-secao li:last-child {
+      border-bottom: none;
+    }
 
-Beijos no Corpo e Lamber: Exploração de novas formas de toque com foco na intimidade não-genital.
+    .resultado-secao li strong {
+      color: var(--text);
+      font-weight: 600;
+    }
 
-Roleplay de "Celebridade e Fã": Jogo de adoração onde um parceiro é o ídolo e o outro o devoto, focado na admiração.
+    .resultado-secao li span {
+      color: var(--text-secondary);
+      display: block;
+      margin-top: 4px;
+      font-size: 0.95rem;
+    }
 
-Nível 3: Limites e Quebra de Regras (O Ousado)
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-1. Breve Descrição: Introdução controlada a elementos leves de BDSM, jogos de poder e a exploração de pequenos tabus.
+    .fade-in {
+      animation: fadeIn 0.4s ease-out;
+    }
 
-2. Brinquedos Sugeridos:
+    @media (max-width: 480px) {
+      html { font-size: 16px; }
+      #quiz-container { padding: 60px 20px 140px; }
+      .tela-inicial h1 { font-size: 1.8rem; }
+      .question-title { font-size: 1.35rem; }
+      select, label { padding: 16px; font-size: 1rem; }
+      #btn-container button { width: 100%; padding: 16px 32px; }
+      .resultado-nivel h1 { font-size: 1.6rem; }
+    }
 
-Pás ou Paddles de silicone (Dor suave consensual)
-
-Vibrador de sucção (Estimulação clitoriana intensa)
-
-Gags de seda (Restrição oral não-invasiva)
-
-Algemas de couro macio
-
-Vibradores Duplos ou Couples Rings
-
-3. Parceiros Compatíveis: Pessoas que gostam de jogos de poder light, que têm confiança para estabelecer e respeitar limites firmes.
-
-4. Roupas e Acessórios Sugeridos:
-
-Roupas em vinil ou látex (Look Dominador)
-
-Máscaras e vendas escuras (Aumento sensorial)
-
-Chicotes ou Crop (Cavalaria)
-
-Botas de cano alto ou over-the-knee
-
-Coleiras ou Gargantilhas
-
-5. Fantasias a Serem Exploradas:
-
-Dominação e Submissão Leves (D/s): Um parceiro assume temporariamente o controle das ações e decisões do outro, com regras claras de consentimento.
-
-Spanking (Palmadas consensuais): Uso de tapas ou objetos leves nas nádegas para dor e excitação consensual.
-
-Tease and Denial (Sedução e Negação do Orgasmo): Provocar e levar o parceiro ao limite do orgasmo, mas interromper intencionalmente para intensificar o desejo.
-
-Exibicionismo e Voyeurismo (Mútuo e Seguro): Pequenos atos de exposição para terceiros ou assistir a exposição do parceiro em locais de baixo risco.
+    #quiz-container:empty, #btn-container:empty { display: none; }
+  </style>
+</head>
+<body>
+  <div id="progress-container">
+    <div id="progress-bar"></div>
+  </div>
+  <div id="quiz-container"></div>
+  <div id="btn-container"></div>
+  <script src="quiz.js"></script>
+</body>
+</html>
