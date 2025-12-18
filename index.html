@@ -65,7 +65,7 @@
       min-height: 100vh;
     }
 
-    /* TELA INICIAL / BOAS-VINDAS */
+    /* TELA INICIAL */
     .tela-inicial {
       display: flex;
       flex-direction: column;
@@ -151,6 +151,7 @@
       gap: 12px;
     }
 
+    /* SELECT (menu suspenso) */
     select {
       width: 100%;
       padding: 18px 48px 18px 18px;
@@ -174,7 +175,8 @@
       outline: none;
     }
 
-    label {
+    /* CARDS DE OPÇÃO (radio e checkbox) */
+    .option-card {
       display: flex;
       align-items: flex-start;
       gap: 14px;
@@ -188,20 +190,21 @@
       transition: all 0.2s ease;
     }
 
-    label:hover {
+    .option-card:hover {
       border-color: var(--accent);
     }
 
-    label:has(input:checked) {
+    .option-card:has(input:checked) {
       border-color: var(--accent);
       background: var(--bg);
     }
 
-    label span {
+    .option-card span {
       flex: 1;
       line-height: 1.5;
     }
 
+    /* CHECKBOX */
     input[type="checkbox"] {
       appearance: none;
       -webkit-appearance: none;
@@ -233,6 +236,37 @@
       transform: rotate(45deg);
     }
 
+    /* RADIO */
+    input[type="radio"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      min-width: 22px;
+      margin-top: 2px;
+      border: 2px solid var(--border);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    input[type="radio"]:checked {
+      border-color: var(--accent);
+    }
+
+    input[type="radio"]:checked::after {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 4px;
+      width: 10px;
+      height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    /* BOTÕES */
     #btn-container {
       position: fixed;
       bottom: 0;
@@ -360,7 +394,7 @@
       .tela-inicial .subtitulo { font-size: 1.1rem; }
       .tela-inicial .descricao { font-size: 0.95rem; }
       .question-title { font-size: 1.35rem; }
-      select, label { padding: 16px; font-size: 1rem; }
+      select, .option-card { padding: 16px; font-size: 1rem; }
       #btn-container button { width: 100%; padding: 16px 32px; }
       .resultado-nivel h1 { font-size: 1.6rem; }
     }
